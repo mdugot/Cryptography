@@ -1,14 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   digest.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/25 17:08:01 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/25 17:19:05 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "digest.h"
 #include "command.h"
 
-unsigned int* hash(size_t (*reader)(char*, size_t), void (*digest)(char*, unsigned int*, unsigned long int*, size_t), unsigned int* (*initState)(), int print)
+unsigned int	*hash(size_t (*reader)(char*, size_t), \
+		void (*digest)(char*, unsigned int*, unsigned long int*, size_t), \
+		unsigned int *(*init_state)(), int print)
 {
-	char buff[65];
-	unsigned int *state;
-	unsigned long int size;
-	size_t length;
+	char				buff[65];
+	unsigned int		*state;
+	unsigned long int	size;
+	size_t				length;
 
-	state = initState();
+	state = init_state();
 	size = 0;
 	length = reader(buff, 64);
 	buff[length] = 0;
@@ -23,10 +37,10 @@ unsigned int* hash(size_t (*reader)(char*, size_t), void (*digest)(char*, unsign
 			ft_putstr(buff);
 		digest(buff, state, &size, length);
 	}
-	return state;
+	return (state);
 }
 
-void rprintHash(char* hash, char* string, char* file, char *type)
+void			rprint_hash(char *hash, char *string, char *file, char *type)
 {
 	(void)type;
 	if (string)
@@ -37,7 +51,7 @@ void rprintHash(char* hash, char* string, char* file, char *type)
 		ft_printf("%s\n", hash);
 }
 
-void printHash(char* hash, char* string, char* file, char *type)
+void			print_hash(char *hash, char *string, char *file, char *type)
 {
 	if (string)
 		ft_printf("%s (\"%s\") = %s\n", type, string, hash);
@@ -47,38 +61,41 @@ void printHash(char* hash, char* string, char* file, char *type)
 		ft_printf("%s\n", hash);
 }
 
-void checkDigest(t_sslarg *arg, struct s_command *command)
+void			check_digest(t_sslarg *arg, struct s_command *command)
 {
 	t_digest *digest;
 
 	digest = ft_memalloc(sizeof(t_digest));
-	allowOptions(arg, (char*[]){"p", "q", "r", "s", NULL});
-	digest->string = getListContents(arg, "s");
-	digest->reverse = hasOption(arg, "r");
-	digest->quiet = hasOption(arg, "q");
-	digest->printStdin = hasOption(arg, "p");
+	allow_options(arg, (char*[]){"p", "q", "r", "s", NULL});
+	digest->string = get_list_contents(arg, "s");
+	digest->reverse = has_option(arg, "r");
+	digest->quiet = has_option(arg, "q");
+	digest->printStdin = has_option(arg, "p");
 	digest->files = arg->argv;
 	digest->nfiles = arg->argc;
 	command->param = digest;
 }
 
-void freeDigest(t_digest *digest)
+void			free_digest(t_digest *digest)
 {
 	if (digest->string)
 		ft_memdel((void**)&(digest->string));
 	ft_memdel((void**)&digest);
 }
 
-void executeDigest(struct s_command *command, void (*digest)(char*, unsigned int*, unsigned long int*, size_t), unsigned int* (*initState)(), void (*printResult)(unsigned int *, char*, char*, t_digest *))
+void			execute_digest(struct s_command *command, \
+		void (*digest)(char*, unsigned int*, unsigned long int*, size_t), \
+		unsigned int *(*init_state)(), \
+		void (*print_result)(unsigned int *, char*, char*, t_digest *))
 {
-	t_digest *cmd;
-	int i;
+	t_digest	*cmd;
+	int			i;
 
 	cmd = command->param;
-	if ((!cmd->string && cmd->nfiles <= 0) || cmd->printStdin)
+	if ((!cmd->string && cmd->nfiles <= 0) || cmd->print_stdin)
 	{
-		printResult(
-			hash(readFromFd, digest, initState, cmd->printStdin),
+		print_result(
+			hash(read_from_fd, digest, init_sState, cmd->print_stdin),
 			NULL, NULL, cmd);
 	}
 	if (cmd->string)
@@ -86,9 +103,9 @@ void executeDigest(struct s_command *command, void (*digest)(char*, unsigned int
 		i = 0;
 		while (cmd->string[i])
 		{
-			argReadAccess(cmd->string[i]);
-			printResult(
-				hash(readFromArg, digest, initState, 0),
+			arg_read_access(cmd->string[i]);
+			print_result(
+				hash(read_from_arg, digest, init_state, 0),
 				cmd->string[i], NULL, cmd);
 			i++;
 		}
@@ -97,11 +114,11 @@ void executeDigest(struct s_command *command, void (*digest)(char*, unsigned int
 	while (i < cmd->nfiles)
 	{
 		ft_printf("file : %s\n", cmd->files[i]);
-		fdReadAccess(cmd->files[i]);
-		printResult(
-			hash(readFromFd, digest, initState, 0),
+		fd_read_access(cmd->files[i]);
+		print_result(
+			hash(read_from_fd, digest, init_state, 0),
 			NULL, cmd->files[i], cmd);
 		i++;
 	}
-	freeDigest(cmd);
+	free_digest(cmd);
 }

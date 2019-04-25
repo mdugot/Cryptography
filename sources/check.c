@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/25 16:15:29 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/25 16:22:09 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "check.h"
 
-int hasOption(t_sslarg *arg, char *toCheck)
+int		has_option(t_sslarg *arg, char *to_check)
 {
 	t_list *tmp;
 	t_pair *pair;
@@ -9,19 +21,19 @@ int hasOption(t_sslarg *arg, char *toCheck)
 	while (tmp != NULL)
 	{
 		pair = (t_pair*)tmp->content;
-		if (ft_strcmp(pair->key, toCheck) == 0)
-			return 1;
+		if (ft_strcmp(pair->key, to_check) == 0)
+			return (1);
 		tmp = tmp->next;
 	}
-	return 0;
+	return (0);
 }
 
-void allowOptions(t_sslarg *arg, char **options)
+void	allow_options(t_sslarg *arg, char **options)
 {
-	t_list *tmp;
-	t_pair *pair;
-	int	ok;
-	int i;
+	t_list	*tmp;
+	t_pair	*pair;
+	int		ok;
+	int		i;
 
 	tmp = arg->options;
 	while (tmp != NULL)
@@ -36,53 +48,54 @@ void allowOptions(t_sslarg *arg, char **options)
 			i++;
 		}
 		if (!ok)
-			wrongArg(arg, ft_strf("unknown option '%s'", pair->key));
+			wrong_arg(arg, ft_strf("unknown option '%s'", pair->key));
 		tmp = tmp->next;
 	}
 }
 
-char* findContent(t_sslarg *arg, char *toCheck, int idx)
+char	*find_content(t_sslarg *arg, char *to_check, int idx)
 {
-	t_list *tmp;
-	t_pair *pair;
-	int i;
+	t_list	*tmp;
+	t_pair	*pair;
+	int		i;
 
 	tmp = arg->options;
 	i = 0;
 	while (tmp != NULL)
 	{
 		pair = (t_pair*)tmp->content;
-		if (ft_strcmp(pair->key, toCheck) == 0)
+		if (ft_strcmp(pair->key, to_check) == 0)
 		{
 			if (idx == i)
 			{
 				if (pair->value == NULL)
-					wrongArg(arg, ft_strf("must have -%s with value", toCheck));
-				return pair->value;
+					wrong_arg(arg, \
+						ft_strf("must have -%s with value", to_check));
+				return (pair->value);
 			}
 			else
 				i++;
 		}
 		tmp = tmp->next;
 	}
-	return NULL;
+	return (NULL);
 }
 
-char* getContent(t_sslarg *arg, char *toCheck)
+char	*get_content(t_sslarg *arg, char *to_check)
 {
 	char *content;
 
-	if (hasOption(arg, toCheck) == 0)
-		return NULL;
-	content = findContent(arg, toCheck, 0);
-	return content;
+	if (has_option(arg, to_check) == 0)
+		return (NULL);
+	content = find_content(arg, to_check, 0);
+	return (content);
 }
 
-int countOptions(t_sslarg *arg, char *toCheck)
+int		count_options(t_sslarg *arg, char *to_check)
 {
-	t_list *tmp;
-	t_pair *pair;
-	int i;
+	t_list	*tmp;
+	t_pair	*pair;
+	int		i;
 
 	tmp = arg->options;
 	i = 0;
@@ -90,28 +103,28 @@ int countOptions(t_sslarg *arg, char *toCheck)
 	{
 		pair = (t_pair*)tmp->content;
 		if (ft_strcmp(pair->key, toCheck) == 0)
-				i++;
+			i++;
 		tmp = tmp->next;
 	}
-	return i;
+	return (i);
 }
 
-char** getListContents(t_sslarg *arg, char *toCheck)
+char	**get_list_contents(t_sslarg *arg, char *to_check)
 {
-	char **contents;
-	int count;
-	int i;
+	char	**contents;
+	int		count;
+	int		i;
 
-	count = countOptions(arg, toCheck);
+	count = count_options(arg, to_check);
 	if (count <= 0)
-		return NULL;
-	contents = ft_memalloc((count+1) * sizeof(char*));
+		return (NULL);
+	contents = ft_memalloc((count + 1) * sizeof(char*));
 	i = 0;
 	while (i < count)
 	{
-		contents[i] = findContent(arg, toCheck, i);
+		contents[i] = find_content(arg, toCheck, i);
 		i++;
 	}
 	contents[i] = NULL;
-	return contents;
+	return (contents);
 }

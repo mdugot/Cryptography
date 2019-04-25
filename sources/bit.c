@@ -1,24 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bit.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/25 16:13:37 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/25 16:15:14 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "bit.h"
 
-char bitMask(int idx)
+char	bit_mask(int idx)
 {
-	char mask;
-	int i = 7;
+	char	mask;
+	int		i;
 
+	i = 7;
 	mask = 1;
-	while(i > idx)
+	while (i > idx)
 	{
 		mask *= 2;
 		i--;
 	}
-	return mask;
+	return (mask);
 }
 
-void setBit(char *bytes, int idx, char bit)
+void	set_bit(char *bytes, int idx, char bit)
 {
 	char mask;
 
-	mask = bitMask(idx % 8);
+	mask = bit_mask(idx % 8);
 	idx = idx / 8;
 	if (bit)
 		bytes[idx] = bytes[idx] | mask;
@@ -26,13 +39,11 @@ void setBit(char *bytes, int idx, char bit)
 		bytes[idx] = bytes[idx] & (0xFF ^ mask);
 }
 
-char getBit(char *bytes, int idx)
+char	get_bit(char *bytes, int idx)
 {
 	char mask;
 
-	mask = bitMask(idx % 8);
+	mask = bit_mask(idx % 8);
 	idx = idx / 8;
-//	ft_printf("byte idx %d\n", idx);
-//	ft_printf("%08hhb get (%08hhb) = %d\n", bytes[idx], mask, (bytes[idx] & mask) ? 1 : 0);
-	return (bytes[idx] & mask) ? 1 : 0;
+	return ((bytes[idx] & mask) ? 1 : 0);
 }
