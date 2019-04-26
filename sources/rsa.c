@@ -1,295 +1,319 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rsa.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/26 14:39:29 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/26 15:58:12 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rsa.h"
 
-__int64_t gcdExtended(__uint64_t a, __uint64_t b, __int64_t *x,  __int64_t *y)
+__int64_t	gcd_extended(__uint64_t a, __uint64_t b, __int64_t *x, __int64_t *y)
 {
-   // Base Case
-    if (a == 0)
-    {
-        *x = 0;
-        *y = 1;
-        return b;
-    }
-    __int64_t x1, y1; // To store results of recursive call 
-    __int64_t gcd = gcdExtended(b%a, a, &x1, &y1); 
-    // Update x and y using results of recursive 
-    // call 
-    *x = ((__uint64_t)y1 - (b/a) * (__uint64_t)x1);
-    *y = x1; 
-  
-    return gcd;
+	__int64_t x1;
+	__int64_t y1;
+	__int64_t gcd;
+
+	if (a == 0)
+	{
+		*x = 0;
+		*y = 1;
+		return (b);
+	}
+	gcd = gcd_extended(b % a, a, &x1, &y1);
+	*x = ((__uint64_t)y1 - (b / a) * (__uint64_t)x1);
+	*y = x1;
+	return (gcd);
 }
 
-int isCoprime(__uint64_t n1, __uint64_t n2)
+int			is_coprime(__uint64_t n1, __uint64_t n2)
 {
 	__uint64_t i;
+
 	i = 2;
 	while (i <= n2)
 	{
 		if (i % n1 == 0 && i % n2 == 0)
-			return 0;
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
 
-void	randomPrimePair(t_rsakey *key, int (*isPrimary)(__uint64_t, float), float probability)
+void		random_prime_pair(t_rsakey *key, \
+			int (*is_primary)(__uint64_t, float), float probability)
 {
 	key->prime1 = 0;
-	while (key->prime1 == 0 || !isPrimary(key->prime1, probability))
-		key->prime1 = randomInt64(RANDMIN, RANDMAX);
+	while (key->prime1 == 0 || !is_primary(key->prime1, probability))
+		key->prime1 = random_int_64(RANDMIN, RANDMAX);
 	key->prime2 = 0;
 	while (key->prime2 == 0
-		|| !isPrimary(key->prime2, probability)
-		|| !isCoprime((key->prime1-1) * (key->prime2-1), key->publicExponent))
-		key->prime2 = randomInt64(RANDMIN, RANDMAX);
+		|| !is_primary(key->prime2, probability)
+		|| !is_coprime((key->prime1 - 1) * (key->prime2 - 1), \
+						key->public_exponent))
+		key->prime2 = random_int_64(RANDMIN, RANDMAX);
 }
 
-t_rsakey	*createRsaKey(int (*isPrimary)(__uint64_t, float), float probability)
+t_rsakey	*create_rsa_key(int (*is_primary)(__uint64_t, float), \
+			float probability)
 {
 	t_rsakey	*key;
-	__uint64_t phi;
+	__uint64_t	phi;
+	__int64_t	x;
+	__int64_t	y;
+	__int64_t	r;
 
 	key = ft_memalloc(sizeof(t_rsakey));
 	ft_bzero(key, sizeof(t_rsakey));
-	key->publicExponent =  65537;
-	randomPrimePair(key, isPrimary, probability);
+	key->public_exponent = 65537;
+	random_prime_pair(key, is_primary, probability);
 	ft_printf("e is 65537 (0x10001)\n");
-	phi = (key->prime1-1) * (key->prime2-1);
-
-	__int64_t x;
-	__int64_t y;
-	__int64_t r;
-	r = gcdExtended(key->publicExponent, phi, &x, &y);
-	key->privateExponent = (__uint64_t)(x < 0 ? (phi + x) : x);
-	key->modulus = key->prime1*key->prime2;
-	key->exponent1 = key->privateExponent % (key->prime1 -1);
-	key->exponent2 = key->privateExponent % (key->prime2 -1);
-	key->coefficient = modularPow(key->prime2, key->prime1 - 2, key->prime1);
-	return key;
+	phi = (key->prime1 - 1) * (key->prime2 - 1);
+	r = gcd_extended(key->public_exponent, phi, &x, &y);
+	key->private_exponent = (__uint64_t)(x < 0 ? (phi + x) : x);
+	key->modulus = key->prime1 * key->prime2;
+	key->exponent_1 = key->private_exponent % (key->prime1 - 1);
+	key->exponent_2 = key->private_exponent % (key->prime2 - 1);
+	key->coefficient = modular_pow(key->prime2, key->prime1 - 2, key->prime1);
+	return (key);
 }
 
-void	printRsaKey(t_rsakey *key)
+void		print_rsa_key(t_rsakey *key)
 {
 	ft_printf("Private-Key: (64 bit)\n");
 	ft_printf("modulus: %lld (%#llx)\n", key->modulus, key->modulus);
-	ft_printf("publicExponent: %lld (%#llx)\n", key->publicExponent, key->publicExponent);
-	ft_printf("privateExponent: %lld (%#llx)\n", key->privateExponent, key->privateExponent);
+	ft_printf("public_exponent: %lld (%#llx)\n", \
+			key->public_exponent, key->public_exponent);
+	ft_printf("private_exponent: %lld (%#llx)\n", \
+			key->private_exponent, key->private_exponent);
 	ft_printf("prime1: %lld (%#llx)\n", key->prime1, key->prime1);
 	ft_printf("prime2: %lld (%#llx)\n", key->prime2, key->prime2);
-	ft_printf("exponent1: %lld (%#llx)\n", key->exponent1, key->exponent1);
-	ft_printf("exponent2: %lld (%#llx)\n", key->exponent2, key->exponent2);
-	ft_printf("coefficient: %lld (%#llx)\n", key->coefficient, key->coefficient);
+	ft_printf("exponent1: %lld (%#llx)\n", key->exponent_1, key->exponent_1);
+	ft_printf("exponent2: %lld (%#llx)\n", key->exponent_2, key->exponent_2);
+	ft_printf("coefficient: %lld (%#llx)\n", \
+			key->coefficient, key->coefficient);
 }
 
-t_rsakey	*readPrivateKey(char *body, size_t (reader)(char*, size_t))
+t_rsakey	*read_private_key(char *body, size_t (reader)(char*, size_t))
 {
 	t_rsakey	*key;
-	size_t length;
+	size_t		length;
 
 	key = ft_memalloc(sizeof(t_rsakey));
 	ft_bzero(key, sizeof(t_rsakey));
 	if (body)
-		argReadAccess(body);
-	checkIsSequence(reader);
-	length = readLength(reader);
-	if (passData(reader) != 0x02)
+		arg_read_access(body);
+	check_is_sequence(reader);
+	length = read_length(reader);
+	if (pass_data(reader) != 0x02)
 	{
-		checkIsBits(reader);
-		length = readLength(reader);
-		checkIsSequence(reader);
-		length = readLength(reader);
+		check_is_bits(reader);
+		length = read_length(reader);
+		check_is_sequence(reader);
+		length = read_length(reader);
 	}
-	readInteger(reader, (char*)&key->modulus, 8);
-	readInteger(reader, (char*)&key->publicExponent, 8);
-	readInteger(reader, (char*)&key->privateExponent, 8);
-	readInteger(reader, (char*)&key->prime1, 8);
-	readInteger(reader, (char*)&key->prime2, 8);
-	readInteger(reader, (char*)&key->exponent1, 8);
-	readInteger(reader, (char*)&key->exponent2, 8);
-	readInteger(reader, (char*)&key->coefficient, 8);
-	//printRsaKey(key);
-	return key;
+	read_integer(reader, (char*)&key->modulus, 8);
+	read_integer(reader, (char*)&key->public_exponent, 8);
+	read_integer(reader, (char*)&key->private_exponent, 8);
+	read_integer(reader, (char*)&key->prime1, 8);
+	read_integer(reader, (char*)&key->prime2, 8);
+	read_integer(reader, (char*)&key->exponent_1, 8);
+	read_integer(reader, (char*)&key->exponent_2, 8);
+	read_integer(reader, (char*)&key->coefficient, 8);
+	return (key);
 }
 
-t_rsakey	*readPublicKey(char *body, size_t (reader)(char*, size_t))
+t_rsakey	*read_public_key(char *body, size_t (reader)(char*, size_t))
 {
 	t_rsakey	*key;
-	size_t length;
+	size_t		length;
 
 	key = ft_memalloc(sizeof(t_rsakey));
 	ft_bzero(key, sizeof(t_rsakey));
-	key->publicKey = 1;
+	key->public_key = 1;
 	if (body)
-		argReadAccess(body);
-	checkIsSequence(reader);
-	length = readLength(reader);
+		arg_read_access(body);
+	check_is_sequence(reader);
+	length = read_length(reader);
 	ft_printf("sequence length = %llx\n", length);
-	if (passData(reader) != 0x02)
+	if (pass_data(reader) != 0x02)
 	{
 		ft_printf("PASS\n");
-		checkIsBits(reader);
-		length = readLength(reader);
-		checkIsSequence(reader);
-		length = readLength(reader);
+		check_is_bits(reader);
+		length = read_length(reader);
+		check_is_sequence(reader);
+		length = read_length(reader);
 		ft_printf("END PASS\n");
 	}
 	ft_printf("modulus\n");
-	readInteger(reader, (char*)&key->modulus, 8);
+	read_integer(reader, (char*)&key->modulus, 8);
 	ft_printf("public e\n");
-	readInteger(reader, (char*)&key->publicExponent, 8);
+	read_integer(reader, (char*)&key->public_exponent, 8);
 	ft_printf("ok\n");
-	printRsaKey(key);
-	return key;
+	print_rsa_key(key);
+	return (key);
 }
 
-size_t	writePublicKey(t_rsakey	*key, char *buff)
+size_t		write_public_key(t_rsakey *key, char *buff)
 {
 	size_t length;
 
 	length = 0;
-	writeSequence(buff, DER_VERSION + 9 + 3, &length);
-	writeVersion(buff, &length);
-	writeInteger(buff, key->modulus, &length, 9);
-	writeInteger(buff, key->publicExponent, &length, 3);
-	return length;
+	write_sequence(buff, DER_VERSION + 9 + 3, &length);
+	write_version(buff, &length);
+	write_integer(buff, key->modulus, &length, 9);
+	write_integer(buff, key->public_exponent, &length, 3);
+	return (length);
 }
 
-size_t	writePrivateKey(t_rsakey	*key, char *buff)
+size_t		write_private_key(t_rsakey *key, char *buff)
 {
 	size_t length;
 
 	length = 0;
-	writeSequence(buff, DER_VERSION + 9 + 3 + 8 + 5 + 5 + 4 + 4 + 4 + 8*2, &length);
-	writeVersion(buff, &length);
-	writeInteger(buff, key->modulus, &length, 9);
-	writeInteger(buff, key->publicExponent, &length, 3);
-	writeInteger(buff, key->privateExponent, &length, 8);
-	writeInteger(buff, key->prime1, &length, 5);
-	writeInteger(buff, key->prime2, &length, 5);
-	writeInteger(buff, key->exponent1, &length, 4);
-	writeInteger(buff, key->exponent2, &length, 4);
-	writeInteger(buff, key->coefficient, &length, 4);
-	return length;
+	write_sequence(buff, \
+			DER_VERSION + 9 + 3 + 8 + 5 + 5 + 4 + 4 + 4 + 8 * 2, &length);
+	write_version(buff, &length);
+	write_integer(buff, key->modulus, &length, 9);
+	write_integer(buff, key->public_exponent, &length, 3);
+	write_integer(buff, key->private_exponent, &length, 8);
+	write_integer(buff, key->prime1, &length, 5);
+	write_integer(buff, key->prime2, &length, 5);
+	write_integer(buff, key->exponent_1, &length, 4);
+	write_integer(buff, key->exponent_2, &length, 4);
+	write_integer(buff, key->coefficient, &length, 4);
+	return (length);
 }
 
-void printHead(int pubout, t_des *des)
+void		print_head(int pubout, t_des *des)
 {
 	unsigned long int salt;
 
 	if (pubout)
-		ft_printf_fd(fdWriteAccess(NULL), "-----BEGIN RSA PUBLIC KEY-----\n");
+		ft_printf_fd(fd_write_access(NULL), \
+				"-----BEGIN RSA PUBLIC KEY-----\n");
 	else
-		ft_printf_fd(fdWriteAccess(NULL), "-----BEGIN RSA PRIVATE KEY-----\n");
+		ft_printf_fd(fd_write_access(NULL), \
+				"-----BEGIN RSA PRIVATE KEY-----\n");
 	if (des)
 	{
-		desPassword(des);
-		salt = des->int64Salt;
-		reverseEndian((char*)&salt, 8);
-		ft_printf_fd(fdWriteAccess(NULL), "Proc-Type: 4,ENCRYPTED\n");
-		ft_printf_fd(fdWriteAccess(NULL), "DEK-Info: DES-CBC,%016llX\n\n", salt);
+		des_password(des);
+		salt = des->int_64_salt;
+		reverse_endian((char*)&salt, 8);
+		ft_printf_fd(fd_write_access(NULL), "Proc-Type: 4,ENCRYPTED\n");
+		ft_printf_fd(fd_write_access(NULL), \
+				"DEK-Info: DES-CBC,%016llX\n\n", salt);
 	}
 }
 
-void printEnd(int pubout)
+void		print_end(int pubout)
 {
 	if (pubout)
-		ft_printf_fd(fdWriteAccess(NULL), "\n-----END RSA PUBLIC KEY-----\n");
+		ft_printf_fd(fd_write_access(NULL), \
+				"\n-----END RSA PUBLIC KEY-----\n");
 	else
-		ft_printf_fd(fdWriteAccess(NULL), "\n-----END RSA PRIVATE KEY-----\n");
+		ft_printf_fd(fd_write_access(NULL), \
+				"\n-----END RSA PRIVATE KEY-----\n");
 }
 
-void	writeKeyDER(t_rsakey *key, int pubout)
+void		write_key_der(t_rsakey *key, int pubout)
 {
-	char buff[1000] = {0};
-	size_t length;
+	char	buff[1000] = {0};
+	size_t	length;
+
 	if (pubout)
-		length = writePublicKey(key, buff);
+		length = write_public_key(key, buff);
 	else
-		length = writePrivateKey(key, buff);
-	writeToFd(buff, length);
+		length = write_private_key(key, buff);
+	write_to_fd(buff, length);
 }
 
-void	writeKey(t_rsakey *key, int pubout, t_des *des)
+void		write_key(t_rsakey *key, int pubout, t_des *des)
 {
-	char buff[1000] = {0};
-	size_t length;
+	char	buff[1000] = {0};
+	size_t	length;
 
-	printHead(pubout, des);
+	print_head(pubout, des);
 	if (pubout)
-		length = writePublicKey(key, buff);
+		length = write_public_key(key, buff);
 	else
-		length = writePrivateKey(key, buff);
+		length = write_private_key(key, buff);
 	if (des)
 	{
-		buffReadAccess(buff, length);
-		des->int64Iv = des->int64Salt;
-		DES(des);
+		buff_read_access(buff, length);
+		des->int_64_iv = des->int_64_salt;
+		des_command(des);
 	}
 	else
-		writeToFd64(buff, length);
-	printEnd(pubout);
+		write_to_fd_64(buff, length);
+	print_end(pubout);
 }
 
-t_rsakey	*readKeyBody(char *body, int pubin, t_des *des)
+t_rsakey	*read_key_body(char *body, int pubin, t_des *des)
 {
-	char buff[KEYMAXBODY+1];
+	char buff[KEYMAXBODY + 1];
 
-	if (des && des->int64Salt)
+	if (des && des->int_64_salt)
 	{
-		buffReadAccess(body, ft_strlen(body));
-		buffWriteAccess(buff, KEYMAXBODY);
-		desPassword(des);
-		des->int64Iv = des->int64Salt;
-		DES(des);
-		buffReadAccess(buff, KEYMAXBODY);
+		buff_read_access(body, ft_strlen(body));
+		buff_write_access(buff, KEYMAXBODY);
+		des_password(des);
+		des->int_64_iv = des->int_64_salt;
+		des_command(des);
+		buff_read_access(buff, KEYMAXBODY);
 		if (pubin)
-			return readPublicKey(buff, readFromBuff);
-		return readPrivateKey(buff, readFromBuff);
+			return (read_public_key(buff, read_from_buff));
+		return (read_private_key(buff, read_from_buff));
 	}
 	else
 	{
 		if (pubin)
-			return readPublicKey(body, readFromArg64);
-		return readPrivateKey(body, readFromArg64);
+			return (read_public_key(body, read_from_arg_64));
+		return (read_private_key(body, read_from_arg_64));
 	}
 }
 
-t_rsakey	*readKeyDER(int pubin)
+t_rsakey	*read_key_der(int pubin)
 {
-		if (pubin)
-			return readPublicKey(NULL, readFromFd);
-		return readPrivateKey(NULL, readFromFd);
+	if (pubin)
+		return (read_public_key(NULL, read_from_fd));
+	return (read_private_key(NULL, read_from_fd));
 }
 
-t_rsakey	*readKey(int pubin, t_des *des)
+t_rsakey	*read_key(int pubin, t_des *des)
 {
-	char *line;
-	char body[KEYMAXBODY+1];
-	int end;
-	char *salt;
+	char	*line;
+	char	body[KEYMAXBODY + 1];
+	int		end;
+	char	*salt;
 
 	end = -1;
 	body[0] = 0;
 	line = NULL;
 	while (end < 1)
 	{
-		if (get_next_line(fdReadAccess(NULL), &line) <= 0)
-			basicError("error when reading rsa pem key");
+		if (get_next_line(fd_read_access(NULL), &line) <= 0)
+			basic_error("error when reading rsa pem key");
 		if (end < 0 &&
 			ft_strstr(line, "-----BEGIN") == line &&
 			line + ft_strlen(line) - ft_strstr(line, "KEY-----") == 8)
 		{
 			end = 0;
 		}
-		else if (ft_strlen(line) == 0 || ft_strstr(line, "Proc-Type: 4,ENCRYPTED") == line)
+		else if (ft_strlen(line) == 0 ||
+				ft_strstr(line, "Proc-Type: 4,ENCRYPTED") == line)
 		{
 		}
 		else if (end == 0 && ft_strstr(line, "DEK-Info: DES-CBC,") == line)
 		{
 			salt = line + ft_strlen("DEK-Info: DES-CBC,");
 			if (ft_strlen(salt) != 16)
-				basicError("pem wrong salt format");
-			des->int64Salt = keyFromString(salt);
+				basic_error("pem wrong salt format");
+			des->int_64_salt = key_from_string(salt);
 		}
 		else if (end == 0 &&
 			ft_strstr(line, "-----END") == line &&
@@ -300,40 +324,40 @@ t_rsakey	*readKey(int pubin, t_des *des)
 		else if (end == 0)
 		{
 			if (ft_strlen(body) + ft_strlen(line) >= KEYMAXBODY)
-				basicError("pem key wrong format");
+				basic_error("pem key wrong format");
 			ft_strcat(body, line);
 		}
 		else
-			basicError("pem key wrong format");
+			basic_error("pem key wrong format");
 	}
 	ft_strdel(&line);
-	return readKeyBody(body, pubin, des);
+	return (read_key_body(body, pubin, des));
 }
 
-void checkRsaKey(t_rsakey *key)
+void		check_rsa_key(t_rsakey *key)
 {
-	if (key->publicExponent * key->publicExponent % 2 != 1)
-		rsaError("d e is not congruent to 1");
-	if (key->publicExponent % 2 != 1)
-		rsaError("e is not odd");
+	if (key->public_exponent * key->public_exponent % 2 != 1)
+		rsa_error("d e is not congruent to 1");
+	if (key->public_exponent % 2 != 1)
+		rsa_error("e is not odd");
 	if (key->modulus % 2 != 1)
-		rsaError("n is not odd");
+		rsa_error("n is not odd");
 	if (key->prime1 % 2 != 1)
-		rsaError("p is not odd");
+		rsa_error("p is not odd");
 	if (key->prime2 % 2 != 1)
-		rsaError("q is not odd");
+		rsa_error("q is not odd");
 	if (key->prime1 * key->prime2 != key->modulus)
-		rsaError("n does not equal p q");
-	if ((key->exponent1 * key->publicExponent) % (key->prime1 - 1) != 1)
-		rsaError("1 is does not equal (dp e) mod (p - 1)");
-	if ((key->exponent2 * key->publicExponent) % (key->prime2 - 1) != 1)
-		rsaError("1 is does not equal (dq e) mod (q - 1)");
-	if (key->exponent1 != key->privateExponent % (key->prime1 -1))
-		rsaError("dp does not equal d mod (p - 1)");
-	if (key->exponent2 != key->privateExponent % (key->prime2 -1))
-		rsaError("dq does not equal d mod (p - 1)");
+		rsa_error("n does not equal p q");
+	if ((key->exponent_1 * key->public_exponent) % (key->prime1 - 1) != 1)
+		rsa_error("1 is does not equal (dp e) mod (p - 1)");
+	if ((key->exponent_2 * key->public_exponent) % (key->prime2 - 1) != 1)
+		rsa_error("1 is does not equal (dq e) mod (q - 1)");
+	if (key->exponent_1 != key->private_exponent % (key->prime1 - 1))
+		rsa_error("dp does not equal d mod (p - 1)");
+	if (key->exponent_2 != key->private_exponent % (key->prime2 - 1))
+		rsa_error("dq does not equal d mod (p - 1)");
 	if (key->coefficient >= key->prime1)
-		rsaError("qinv greater than p");
-	rsaError(NULL);
+		rsa_error("qinv greater than p");
+	rsa_error(NULL);
 	ft_printf("RSA key ok\n");
 }

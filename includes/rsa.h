@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 13:21:18 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 13:27:10 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:47:01 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "check.h"
 # include "der.h"
 # include "des.h"
-# include "millerRabin.h"
+# include "miller_rabin.h"
 # define RANDMAX 0xFFFF
 # define RANDMIN 0x1000
 # define KEYMAXBODY 1000

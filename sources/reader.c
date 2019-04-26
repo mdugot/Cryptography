@@ -1,179 +1,179 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reader.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/26 14:26:19 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/26 14:39:16 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "reader.h"
 
-int 			fdReadAccess(char *filename)
+int		fd_read_access(char *filename)
 {
 	static int fd = 0;
+
 	if (filename != NULL)
 	{
 		if (fd != 0)
 			close(fd);
 		fd = open(filename, O_RDONLY);
 		if (fd < 0)
-			wrongFile(filename, "can not open file");
+			wrong_file(filename, "can not open file");
 	}
-	return fd;
+	return (fd);
 }
 
-char*			argReadAccess(char *a)
+char	*arg_read_access(char *a)
 {
 	static char *arg = NULL;
+
 	if (a != NULL)
 		arg = a;
-	return arg;
+	return (arg);
 }
 
-char*			buffReadAccess(char *a, size_t l)
+char	*buff_read_access(char *a, size_t l)
 {
-	static char *arg = NULL;
-	static size_t length = 0;
+	static char		*arg = NULL;
+	static size_t	length = 0;
 
 	if (a != NULL)
 	{
 		arg = a;
 		length = l;
-		return 0;
+		return (0);
 	}
 	if (!l)
-		return arg;
-	return arg+length;
+		return (arg);
+	return (arg + length);
 }
 
-size_t			readFromBuff(char *buffer, size_t maxSize)
+size_t	read_from_buff(char *buffer, size_t max_size)
 {
-	char *arg;
-	char *endarg;
-	size_t size;
+	char	*arg;
+	char	*endarg;
+	size_t	size;
 
 	size = 0;
-	arg = buffReadAccess(NULL, 0);
-	endarg = buffReadAccess(NULL, 1);
-	while (size < maxSize && arg < endarg)
+	arg = buff_read_access(NULL, 0);
+	endarg = buff_read_access(NULL, 1);
+	while (size < max_size && arg < endarg)
 	{
 		buffer[size] = *arg;
 		size++;
 		arg++;
 	}
-	buffReadAccess(arg, endarg - arg);
-	return size;
+	buff_read_access(arg, endarg - arg);
+	return (size);
 }
 
-size_t			readFromFd(char *buffer, size_t maxSize)
+size_t	read_from_fd(char *buffer, size_t max_size)
 {
 	int		size;
 	int		fd;
-	size_t length;
+	size_t	length;
 
-	fd = fdReadAccess(NULL);
-
-	ft_bzero(buffer, maxSize);
+	fd = fd_read_access(NULL);
+	ft_bzero(buffer, max_size);
 	size = 1;
 	length = 0;
-	while(length < maxSize && size > 0)
+	while (length < max_size && size > 0)
 	{
-		size = (int)read(fd, &buffer[length], (maxSize-length));
+		size = (int)read(fd, &buffer[length], (max_size - length));
 		length += size;
 	}
-	//ft_printf("BUFF : %s\n", buffer);
 	if (size == -1)
-		basicError("error while reading from file descriptor");
-	return length;
+		basic_error("error while reading from file descriptor");
+	return (length);
 }
 
-size_t			readFromArg(char *buffer, size_t maxSize)
+size_t	read_from_arg(char *buffer, size_t max_size)
 {
-	char *arg;
-	size_t size;
+	char	*arg;
+	size_t	size;
 
 	size = 0;
-	arg = argReadAccess(NULL);
-	while (size < maxSize && arg[size])
+	arg = arg_read_access(NULL);
+	while (size < max_size && arg[size])
 	{
 		buffer[size] = arg[size];
 		size++;
 	}
-	argReadAccess(&arg[size]);
+	arg_read_access(&arg[size]);
 	buffer[size] = 0;
-	return size;
+	return (size);
 }
 
-size_t		readNoWhiteSpace(size_t (reader)(char*, size_t), char *buffer, size_t maxSize)
+size_t	read_no_white_space(size_t (reader)(char*, size_t), \
+		char *buffer, size_t max_size)
 {
-	char whitespaces[] = " \t\n\r";
-	char *found;
-	size_t length;
-	size_t size;
-	size_t skip;
+	char	whites[] = " \t\n\r";
+	char	*found;
+	size_t	length;
+	size_t	size;
+	size_t	skip;
 
-	size = reader(buffer, maxSize);
+	size = reader(buffer, max_size);
 	length = size;
-	while (ft_firstOf(buffer, whitespaces, length))
+	while (ft_first_of(buffer, whites, length))
 	{
 		skip = 0;
-		while ((found = ft_firstOf(buffer, whitespaces, length-skip)) != NULL)
+		while ((found = ft_first_of(buffer, whites, length - skip)) != NULL)
 		{
-			if (found < (buffer+length-1))
-				ft_memmove(found, found+1, (buffer+length)-(found+1));
+			if (found < (buffer + length - 1))
+				ft_memmove(found, found + 1, (buffer + length) - (found + 1));
 			skip++;
 		}
 		length -= skip;
-		if (size == maxSize)
+		if (size == max_size)
 		{
-			maxSize = maxSize-size+skip;
-			size = reader(buffer+length, maxSize);
+			max_size = max_size - size + skip;
+			size = reader(buffer + length, max_size);
 			length += size;
 		}
 	}
-	return length;
+	return (length);
 }
 
-size_t readFromArg64(char *buff, size_t length)
+size_t	read_from_arg_64(char *buff, size_t length)
 {
-	char buff64[1001];
+	char buff_64[1001];
 
 	if (length >= 1001)
-		basicError("can not read more than 1000 bytes from base64 string");
-	return readBase64(readFromArg, buff, buff64, length);
+		basic_error("can not read more than 1000 bytes from base64 string");
+	return (read_base_64(read_from_arg, buff, buff_64, length));
 }
 
-size_t		readBase64(size_t (reader)(char*, size_t), char *buffer, char *buffer64, size_t maxSize)
+size_t	read_base_64(size_t (reader)(char*, size_t), \
+		char *buffer, char *buffer_64, size_t max_size)
 {
-	static char memory[3] = {0};
-	static size_t extra = 0;
-	size_t length;
-	size_t realLength;
+	static char		memory[3] = {0};
+	static size_t	extra = 0;
+	size_t			length;
+	size_t			rlen;
+	char			*dbg;
 
-	char *dbg;
-
-//	if (extra > 0)
-//		ft_printf("memory before : '%.*s'\n", extra, memory);
 	length = 0;
 	dbg = buffer;
-	while (extra > 0 && maxSize > 0)
+	while (extra > 0 && max_size > 0)
 	{
-//		ft_printf("restore from memory : [%c]\n", memory[0]);
 		*buffer = memory[0];
 		buffer++;
-		ft_memmove(memory, memory+1, 2);
+		ft_memmove(memory, memory + 1, 2);
 		extra--;
 		length++;
-		maxSize--;
+		max_size--;
 	}
-	if (maxSize == 0)
-		return length;
-//	ft_printf("first A : [%c]\n", dbg[0]);
-	realLength = readNoWhiteSpace(reader, buffer64, divCeil(maxSize, 3) * 4);
-//	ft_printf("first B : [%c]\n", dbg[0]);
-//	ft_printf("number char read : %zu\n", realLength);
-	realLength = base64decode(buffer64, realLength, buffer64);
-//	ft_printf("first C : [%c]\n", dbg[0]);
-//	ft_printf("buff64 : '%.*s'\n", realLength, buffer64);
-//	ft_printf("number char decode : %zu\n", realLength);
-	extra = realLength > maxSize ? realLength - maxSize : 0;
-//	ft_printf("extra : %zu\n", extra);
-//	ft_printf("max to read : %zu\n", maxSize);
-	ft_memcpy(buffer, buffer64, realLength-extra);
-	ft_memcpy(memory, buffer64 + maxSize, extra);
-//	if (extra > 0)
-//		ft_printf("memory after : '%.*s'\n", extra, memory);
-	return length + realLength - extra;
+	if (max_size == 0)
+		return (length);
+	rlen = read_no_white_space(reader, buffer_64, div_ceil(max_size, 3) * 4);
+	rlen = base_64_decode(buffer_64, rlen, buffer_64);
+	extra = rlen > max_size ? rlen - max_size : 0;
+	ft_memcpy(buffer, buffer_64, rlen - extra);
+	ft_memcpy(memory, buffer_64 + max_size, extra);
+	return (length + rlen - extra);
 }

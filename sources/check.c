@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:15:29 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 16:22:09 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:49:39 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		count_options(t_sslarg *arg, char *to_check)
 	while (tmp != NULL)
 	{
 		pair = (t_pair*)tmp->content;
-		if (ft_strcmp(pair->key, toCheck) == 0)
+		if (ft_strcmp(pair->key, to_check) == 0)
 			i++;
 		tmp = tmp->next;
 	}
@@ -122,7 +122,7 @@ char	**get_list_contents(t_sslarg *arg, char *to_check)
 	i = 0;
 	while (i < count)
 	{
-		contents[i] = find_content(arg, toCheck, i);
+		contents[i] = find_content(arg, to_check, i);
 		i++;
 	}
 	contents[i] = NULL;

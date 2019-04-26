@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:08:11 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 16:13:29 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:49:22 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,29 @@ void	check_64(t_sslarg *arg, struct s_command *command)
 {
 	t_base_64 *cmd;
 
-	cmd = ft_memalloc(sizeof(t_base64));
-	ft_bzero(cmd, sizeof(t_base64));
-	allowOptions(arg, (char*[]){"i", "o", "d", "e", NULL});
-	cmd->input = getContent(arg, "i");
-	cmd->output = getContent(arg, "o");
-	cmd->decrypt = hasOption(arg, "d");
+	cmd = ft_memalloc(sizeof(t_base_64));
+	ft_bzero(cmd, sizeof(t_base_64));
+	allow_options(arg, (char*[]){"i", "o", "d", "e", NULL});
+	cmd->input = get_content(arg, "i");
+	cmd->output = get_content(arg, "o");
+	cmd->decrypt = has_option(arg, "d");
 	if (cmd->input)
-		fdReadAccess(cmd->input);
+		fd_read_access(cmd->input);
 	if (cmd->output)
-		fdWriteAccess(cmd->output);
+		fd_write_access(cmd->output);
 	if (arg->argc > 0)
-		wrongArg(arg, ft_strf("unknown option '%s'", arg->argv[0]));
+		wrong_arg(arg, ft_strf("unknown option '%s'", arg->argv[0]));
 	command->param = cmd;
 }
 
-size_t	read_64(t_base64 *cmd, char *buff)
+size_t	read_64(t_base_64 *cmd, char *buff)
 {
 	char buff_64[BUFF64_SIZE * 2];
 
 	if (cmd->decrypt)
-		return (read_base_64(readFromFd, buff, buff_64, BUFF64_SIZE));
+		return (read_base_64(read_from_fd, buff, buff_64, BUFF64_SIZE));
 	else
-		return (readFromFd(buff, BUFF64_SIZE));
+		return (read_from_fd(buff, BUFF64_SIZE));
 }
 
 void	print_64(t_base_64 *cmd, char *buff, size_t length)
@@ -67,7 +67,7 @@ void	print_64(t_base_64 *cmd, char *buff, size_t length)
 
 void	execute_64(struct s_command *command)
 {
-	t_base64	*cmd;
+	t_base_64	*cmd;
 	size_t		length;
 	char		buff[BUFF64_SIZE];
 

@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:19:14 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 17:23:45 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:55:30 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,11 @@ void		check_command(t_sslarg *arg)
 {
 	if (arg->command == NULL)
 		wrong_command("no command.");
-	if (is_in(arg->command, (const char**)standard))
+	if (is_in(arg->command, (const char**)g_standard))
 		return ;
-	if (is_in(arg->command, (const char**)cypher))
+	if (is_in(arg->command, (const char**)g_cypher))
 		return ;
-	if (is_in(arg->command, (const char**)digest))
+	if (is_in(arg->command, (const char**)g_digest))
 		return ;
 	wrong_command(ft_strf("'%s' is an invalid command.", arg->command));
 }

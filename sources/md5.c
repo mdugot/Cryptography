@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:26:43 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 17:37:38 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:55:45 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,6 @@ unsigned int			*hash_md5(char *str)
 	unsigned int *state;
 
 	arg_read_access(str);
-	state = hash(read_from_arg, md5, initState, 0);
+	state = hash(read_from_arg, md5, init_state, 0);
 	return (state);
 }

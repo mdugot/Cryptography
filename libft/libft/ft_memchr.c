@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/24 10:24:29 by mdugot            #+#    #+#             */
-/*   Updated: 2015/11/25 11:06:18 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:41:07 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	return (NULL);
 }
 
-char	*ft_firstOf(const char *bytes, const char *oneOf, size_t n)
+char	*ft_first_of(const char *bytes, const char *one_of, size_t n)
 {
-	int i;
-	char *found;
+	int		i;
+	char	*found;
 
 	i = 0;
-	while (oneOf[i])
+	while (one_of[i])
 	{
-		found = ft_memchr(bytes, (int)oneOf[i], n);
+		found = ft_memchr(bytes, (int)one_of[i], n);
 		if (found)
 			return (found);
 		i++;

@@ -1,34 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rsagen.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/26 15:11:27 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/26 15:13:16 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rsa.h"
 #include "command.h"
 
-void checkRsagen(t_sslarg *arg, struct s_command *command)
+void	check_rsagen(t_sslarg *arg, struct s_command *command)
 {
 	t_rsagen *cmd;
 
 	(void)arg;
 	cmd = ft_memalloc(sizeof(t_rsagen));
 	ft_bzero(cmd, sizeof(t_rsagen));
-	allowOptions(arg, (char*[]){"o", "rand", NULL});
-	cmd->output = getContent(arg, "o");
+	allow_options(arg, (char*[]){"o", "rand", NULL});
+	cmd->output = get_content(arg, "o");
 	if (cmd->output)
-		fdWriteAccess(cmd->output);
-	cmd->random = getContent(arg, "rand");
+		fd_write_access(cmd->output);
+	cmd->random = get_content(arg, "rand");
 	if (cmd->random)
-		randomRead(NULL, 0, cmd->random);
+		random_read(NULL, 0, cmd->random);
 	command->param = cmd;
 }
 
-void freeRsagen(t_rsagen *cmd)
+void	free_rsagen(t_rsagen *cmd)
 {
 	ft_memdel((void**)&cmd);
 }
 
-void executeRsagen(struct s_command *command)
+void	execute_rsagen(struct s_command *command)
 {
 	t_rsagen *cmd;
+	t_rsakey *key;
 
 	cmd = command->param;
-	t_rsakey *key = createRsaKey(ft_ssl_is_primary, 0.9999999);
-	writeKey(key, 0, NULL);
-	freeRsagen(cmd);
+	key = create_rsa_key(ft_ssl_is_primary, 0.9999999);
+	write_key(key, 0, NULL);
+	free_rsagen(cmd);
 }

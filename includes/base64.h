@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 14:32:25 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 14:33:42 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:47:53 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 
 struct s_command;
 
-typedef struct			s_base64
+typedef struct			s_base_64
 {
 	char				*output;
 	char				*input;
 	int					decrypt;
-}						t_base64;
+}						t_base_64;
 
 void					base_64_encode(char *from, size_t length, char *to);
 size_t					base_64_decode(char *from, size_t length, char *to);

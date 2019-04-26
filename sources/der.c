@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:28:50 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 16:38:35 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:50:06 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	check_is_bits(size_t (reader)(char*, size_t))
 
 	byte = next_none_zero(reader);
 	if (byte != 0x03)
-		basicError("wrong der format : bits string not found");
+		basic_error("wrong der format : bits string not found");
 }
 
 size_t	read_length(size_t (reader)(char*, size_t))
@@ -101,7 +101,7 @@ char	pass_data(size_t (reader)(char*, size_t))
 	size_t	r;
 
 	r = reader(&byte, 1);
-	r = read_Length(reader);
+	r = read_length(reader);
 	if (r >= 1000)
 		basic_error("wrong der format : too many data to pass");
 	if (reader(buff, r) != r)

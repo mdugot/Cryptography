@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:03:30 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 16:07:42 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:46:46 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	get_6_bits(char *bits, int length, int offset)
 		length = 6;
 	while (i < length)
 	{
-		setBit(&value, 2 + i, getBit(bits, offset + i));
+		set_bit(&value, 2 + i, get_bit(bits, offset + i));
 		i++;
 	}
 	return (codes[(int)value]);
@@ -64,7 +64,7 @@ void	set_6_bits(char *to, size_t n, size_t offset, char c)
 		n = 6;
 	while (i < n)
 	{
-		setBit(to, offset + i, get_bit(&value, 2 + i));
+		set_bit(to, offset + i, get_bit(&value, 2 + i));
 		i++;
 	}
 }

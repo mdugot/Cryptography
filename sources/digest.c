@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:08:01 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 17:19:05 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:54:46 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void			check_digest(t_sslarg *arg, struct s_command *command)
 	digest->string = get_list_contents(arg, "s");
 	digest->reverse = has_option(arg, "r");
 	digest->quiet = has_option(arg, "q");
-	digest->printStdin = has_option(arg, "p");
+	digest->print_stdin = has_option(arg, "p");
 	digest->files = arg->argv;
 	digest->nfiles = arg->argc;
 	command->param = digest;
@@ -95,7 +95,7 @@ void			execute_digest(struct s_command *command, \
 	if ((!cmd->string && cmd->nfiles <= 0) || cmd->print_stdin)
 	{
 		print_result(
-			hash(read_from_fd, digest, init_sState, cmd->print_stdin),
+			hash(read_from_fd, digest, init_state, cmd->print_stdin),
 			NULL, NULL, cmd);
 	}
 	if (cmd->string)

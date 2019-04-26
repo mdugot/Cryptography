@@ -1,69 +1,84 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rsautl.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/26 15:13:28 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/26 15:20:32 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rsa.h"
 #include "command.h"
 
-void readData(t_rsautl *cmd)
+void	read_data(t_rsautl *cmd)
 {
-	size_t len;
-	char buff;
-	__uint64_t data;
+	size_t		len;
+	char		buff;
+	__uint64_t	data;
 
 	data = 0;
-	len = readFromFd((char*)&data, 8);
-	if (len == 8 && readFromFd(&buff, 1) > 0)
-		basicError("data too large for key size");
-//	ft_printf("HEXDUMP : %08llX\n", data);
+	len = read_from_fd((char*)&data, 8);
+	if (len == 8 && read_from_fd(&buff, 1) > 0)
+		basic_error("data too large for key size");
 	cmd->data = data;
 	cmd->length = len;
 }
 
-void checkRsautl(t_sslarg *arg, struct s_command *command)
+void	check_rsautl(t_sslarg *arg, struct s_command *command)
 {
 	t_rsautl *cmd;
 
 	(void)arg;
 	cmd = ft_memalloc(sizeof(t_rsautl));
 	ft_bzero(cmd, sizeof(t_rsautl));
-	allowOptions(arg, (char*[]){"in", "out", "pubin", "inkey", "encrypt", "decrypt", "hexdump", NULL});
-	cmd->input = getContent(arg, "in");
-	cmd->output = getContent(arg, "out");
-	cmd->inkey = getContent(arg, "inkey");
-	cmd->pubin = hasOption(arg, "pubin");
-	cmd->decrypt = hasOption(arg, "decrypt");
-	cmd->hexdump = hasOption(arg, "hexdump");
+	allow_options(arg, (char*[]){"in", "out", \
+			"pubin", "inkey", "encrypt", "decrypt", "hexdump", NULL});
+	cmd->input = get_content(arg, "in");
+	cmd->output = get_content(arg, "out");
+	cmd->inkey = get_content(arg, "inkey");
+	cmd->pubin = has_option(arg, "pubin");
+	cmd->decrypt = has_option(arg, "decrypt");
+	cmd->hexdump = has_option(arg, "hexdump");
 	if (cmd->inkey == NULL)
-		basicError("no key file specified : Use '-inkey FILE' to specify the key to use");
+		basic_error("no key file specified : \
+				Use '-inkey FILE' to specify the key to use");
 	if (cmd->decrypt && cmd->pubin)
-		basicError("decrypt mode need private key");
+		basic_error("decrypt mode need private key");
 	if (cmd->output)
-		fdWriteAccess(cmd->output);
+		fd_write_access(cmd->output);
 	if (cmd->input)
-		fdReadAccess(cmd->input);
-	readData(cmd);
-	fdReadAccess(cmd->inkey);
-	cmd->key = readKey(cmd->pubin, NULL);
+		fd_read_access(cmd->input);
+	read_data(cmd);
+	fd_read_access(cmd->inkey);
+	cmd->key = read_key(cmd->pubin, NULL);
 	if (cmd->data > cmd->key->modulus)
-		basicError("data too large for key size");
+		basic_error("data too large for key size");
 	command->param = cmd;
 }
 
-void freeRsautl(t_rsautl *cmd)
+void	free_rsautl(t_rsautl *cmd)
 {
 	ft_memdel((void**)&cmd);
 }
 
-void executeRsautl(struct s_command *command)
+void	execute_rsautl(struct s_command *command)
 {
-	t_rsautl *cmd;
-	__uint64_t result;
+	t_rsautl	*cmd;
+	__uint64_t	result;
 
 	cmd = command->param;
-	printRsaKey(cmd->key);
+	print_rsa_key(cmd->key);
 	if (cmd->decrypt)
-		result = modularPow(cmd->data, cmd->key->privateExponent, cmd->key->modulus);
+		result = modular_pow(cmd->data, \
+				cmd->key->private_exponent, cmd->key->modulus);
 	else
-		result = modularPow(cmd->data, cmd->key->publicExponent, cmd->key->modulus);
+		result = modular_pow(cmd->data, \
+				cmd->key->public_exponent, cmd->key->modulus);
 	if (cmd->hexdump)
 		ft_printf("HEXDUMP : %08llX\n", result);
-	writeToFd((char*)&result, 8);
-	freeRsautl(cmd);
+	write_to_fd((char*)&result, 8);
+	free_rsautl(cmd);
 }

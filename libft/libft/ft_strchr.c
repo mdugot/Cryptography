@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/24 14:26:49 by mdugot            #+#    #+#             */
-/*   Updated: 2016/01/07 15:32:44 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:42:38 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,20 @@ char	*ft_strchr(const char *s, int c)
 
 int		ft_index(const char *s, int c)
 {
-	char *temp;
-	int r;
+	char	*temp;
+	int		r;
 
 	r = 0;
 	temp = (char*)s;
 	while (*temp != '\0')
 	{
 		if (*temp == (char)c)
-			return r;
+			return (r);
 		temp++;
 		r++;
 	}
 	if (c == '\0')
-		return r;
+		return (r);
 	else
-		return -1;
+		return (-1);
 }

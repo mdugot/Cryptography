@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:39:25 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 16:50:30 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:51:04 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void				print_des(t_des *cmd, \
 	char endpad;
 
 	endpad = 0;
-	if (cmd->base64 && !cmd->decrypt)
+	if (cmd->base_64 && !cmd->decrypt)
 	{
 		base_64_encode((char*)code, 8 * length, str_64);
-		cmd->writer(str64, ft_strlen(str64));
+		cmd->writer(str_64, ft_strlen(str_64));
 	}
 	else
 	{

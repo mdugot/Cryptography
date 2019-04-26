@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   option.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/26 14:08:09 by mdugot            #+#    #+#             */
+/*   Updated: 2019/04/26 14:13:49 by mdugot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "option.h"
 #include "arg.h"
 
-const char* container[] = {
+const char	*g_container[] = {
 	"#rsa#rsautl",
 	"inform",
 	"outform",
@@ -22,28 +34,27 @@ const char* container[] = {
 	NULL
 };
 
-int		isContainer(char *name, char *str)
+int			is_container(char *name, char *str)
 {
-	int i;
-	int skip;
-	char *ad;
+	int		i;
+	int		skip;
+	char	*ad;
 
 	i = 0;
 	skip = 1;
-	while (container[i] != NULL)
+	while (g_container[i] != NULL)
 	{
-		ad = ft_strstr(container[i], name);
-		if (ad && ad > container[i] && ad[-1] == '#')
+		ad = ft_strstr(g_container[i], name);
+		if (ad && ad > g_container[i] && ad[-1] == '#')
 			skip = 0;
-		if (!skip && ft_strcmp(str, container[i]) == 0)
-			return 1;
+		if (!skip && ft_strcmp(str, g_container[i]) == 0)
+			return (1);
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
-
-t_pair 	*newPair(char *key, char *value)
+t_pair		*new_pair(char *key, char *value)
 {
 	t_pair *pair;
 
@@ -56,10 +67,10 @@ t_pair 	*newPair(char *key, char *value)
 		pair->value = NULL;
 	else
 		pair->value = ft_strdup(value);
-	return pair;
+	return (pair);
 }
 
-void	deletePair(t_pair* pair, size_t size)
+void		delete_pair(t_pair *pair, size_t size)
 {
 	(void)size;
 	if (pair->key != NULL)
@@ -69,9 +80,9 @@ void	deletePair(t_pair* pair, size_t size)
 	free(pair);
 }
 
-void	printOption(t_list *elem)
+void		print_option(t_list *elem)
 {
-	t_pair* pair;
+	t_pair *pair;
 
 	pair = elem->content;
 	if (pair->value == NULL)
@@ -80,33 +91,32 @@ void	printOption(t_list *elem)
 		ft_printf_fd(2, "%s = %s\n", pair->key, pair->value);
 }
 
-
-void	nextArg(t_sslarg *arg)
+void		next_arg(t_sslarg *arg)
 {
 	arg->argc = arg->argc - 1;
 	arg->argv = &arg->argv[1];
 }
 
-int 		expectContent(char *name, t_pair *last)
+int			expect_content(char *name, t_pair *last)
 {
-	if (last == NULL || last->key == NULL || last->value != NULL) 
-		return 0;
-	return isContainer(name, last->key);
+	if (last == NULL || last->key == NULL || last->value != NULL)
+		return (0);
+	return (is_container(name, last->key));
 }
 
-t_pair		*parseOneArg(t_sslarg *arg, t_pair *last, int *end)
+t_pair		*parse_one_arg(t_sslarg *arg, t_pair *last, int *end)
 {
 	ft_printf_fd(2, "parse : %s\n", arg->argv[0]);
-	if (arg->command != NULL && expectContent(arg->command, last))
+	if (arg->command != NULL && expect_content(arg->command, last))
 		last->value = arg->argv[0];
 	else if (ft_strcmp("--", arg->argv[0]) == 0)
 	{
 		*end = 1;
-		nextArg(arg);
+		next_arg(arg);
 	}
 	else if (*end == 0 && arg->argv[0][0] == '-')
 	{
-		last = newPair(arg->argv[0]+1, NULL);
+		last = new_pair(arg->argv[0] + 1, NULL);
 		ft_lstadd_end(&arg->options, ft_lstnew_noalloc(last, sizeof(t_pair)));
 	}
 	else
@@ -116,23 +126,24 @@ t_pair		*parseOneArg(t_sslarg *arg, t_pair *last, int *end)
 		else
 			*end = 1;
 	}
-	return last;
+	return (last);
 }
 
-t_sslarg	*parseOptions(int argc, char *argv[])
+t_sslarg	*parse_options(int argc, char *argv[])
 {
 	t_sslarg	*arg;
 	t_pair		*last;
 	int			end;
 
 	end = 0;
-	arg = newArg(argc, argv, NULL, NULL);
+	arg = new_arg(argc, argv, NULL, NULL);
 	last = NULL;
-	while (arg->argc > 1 && !(arg->command && end)) {
-		nextArg(arg);
-		last = parseOneArg(arg, last, &end);
+	while (arg->argc > 1 && !(arg->command && end))
+	{
+		next_arg(arg);
+		last = parse_one_arg(arg, last, &end);
 	}
 	if (end == 0)
-		nextArg(arg);
-	return arg;
+		next_arg(arg);
+	return (arg);
 }

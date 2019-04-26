@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 13:04:34 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 13:13:22 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:57:49 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@
 	41, 52, 31, 37, 47, 55, \
 	30, 40, 51, 45, 33, 48, \
 	44, 49, 39, 56, 34, 53, \
-	46, 42, 50, 36, 29, 32, \
+	46, 42, 50, 36, 29, 32
 # define CD16_SHIFT \
 	1, \
 	1, \
@@ -158,6 +158,6 @@ void					check_des(t_sslarg *arg, struct s_command *command);
 void					free_des(t_des *digest);
 size_t					read_des(t_des *cmd, char *buff);
 void					execute_des(struct s_command *command);
-void					des_cmd(t_des *cmd);
+void					des_command(t_des *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:52:55 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 17:07:53 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 15:54:21 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ int					get_sbox_value(char *bytes, int table, int offset)
 
 	x = 0;
 	y = 0;
-	setI + bit(&y, 6, get_bit(bytes, offset));
-	setI + bit(&y, 7, get_bit(bytes, offset + 5));
-	setI + bit(&x, 4, get_bit(bytes, offset + 1));
-	setI + bit(&x, 5, get_bit(bytes, offset + 2));
-	setI + bit(&x, 6, get_bit(bytes, offset + 3));
-	setI + bit(&x, 7, get_bit(bytes, offset + 4));
+	set_bit(&y, 6, get_bit(bytes, offset));
+	set_bit(&y, 7, get_bit(bytes, offset + 5));
+	set_bit(&x, 4, get_bit(bytes, offset + 1));
+	set_bit(&x, 5, get_bit(bytes, offset + 2));
+	set_bit(&x, 6, get_bit(bytes, offset + 3));
+	set_bit(&x, 7, get_bit(bytes, offset + 4));
 	return (sbox[64 * table + y * 16 + x]);
 }
 
@@ -111,7 +111,7 @@ int					fperm(int result)
 	int presult;
 
 	presult = 0;
-	reverseEndian((char*)&result, 4);
+	reverse_endian((char*)&result, 4);
 	permutation((char*)&result, (char*)&presult, ftable, 32);
 	return (presult);
 }
@@ -191,6 +191,6 @@ unsigned long int	des(unsigned long int message, \
 	prepare_keys(cmd->int_64_key, keys, cmd->decrypt);
 	result = encode_message(message, keys);
 	if (cmd->decrypt && cmd->cbc)
-		result = result ^ cmd->int64Iv;
+		result = result ^ cmd->int_64_iv;
 	return (result);
 }
