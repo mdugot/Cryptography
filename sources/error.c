@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:19:14 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 15:55:30 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 17:39:36 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,37 +58,6 @@ void		print_list_command(char *name, const char *cmds[])
 		ft_printf_fd(2, "%s\n", cmds[i]);
 		i++;
 	}
-}
-
-void		wrong_arg(t_sslarg *arg, char *message)
-{
-	ft_printf_fd(2, "ft_ssl: Error: [%s] %s\n", arg->command, message);
-	exit(1);
-}
-
-void		basic_error(char *message)
-{
-	ft_printf_fd(2, "ft_ssl: Error: %s\n", message);
-	exit(1);
-}
-
-void		rsa_error(char *message)
-{
-	static int error = 0;
-
-	if (message == NULL && error)
-		exit(1);
-	if (message)
-	{
-		ft_printf_fd(2, "RSA key error: %s\n", message);
-		error = 1;
-	}
-}
-
-void		wrong_file(char *filename, char *message)
-{
-	ft_printf_fd(2, "ft_ssl: Error: %s: %s\n", filename, message);
-	exit(1);
 }
 
 void		wrong_command(char *message)

@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 13:21:18 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 15:47:01 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 19:09:18 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,13 @@ void					execute_rsacmd(struct s_command *command);
 void					check_rsautl(t_sslarg *arg, struct s_command *command);
 void					free_rsautl(t_rsautl *cmd);
 void					execute_rsautl(struct s_command *command);
+size_t					write_public_key(t_rsakey *key, char *buff);
+void					print_head(int pubout, t_des *des);
+t_rsakey				*read_public_key(char *body, \
+							size_t (reader)(char*, size_t));
+t_rsakey				*read_private_key(char *body, \
+							size_t (reader)(char*, size_t));
+size_t					write_private_key(t_rsakey *key, char *buff);
+t_rsakey				*read_key_body(char *body, int pubin, t_des *des);
 
 #endif

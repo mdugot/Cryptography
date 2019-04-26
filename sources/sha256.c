@@ -6,22 +6,12 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:20:59 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:14:19 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 18:42:19 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sha256.h"
 #include "command.h"
-
-unsigned int g_sha_init[8] = {
-	0x6a09e667, \
-	0xbb67ae85, \
-	0x3c6ef372, \
-	0xa54ff53a, \
-	0x510e527f, \
-	0x9b05688c, \
-	0x1f83d9ab, \
-	0x5be0cd19};
 
 unsigned int g_sha_k[64] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, \
@@ -41,15 +31,12 @@ unsigned int g_sha_k[64] = {
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, \
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
 
-static void				update(unsigned int *state, unsigned int *word)
+void				update_sha_1(unsigned int *word, \
+		unsigned int *w, unsigned int *s)
 {
 	unsigned int i;
-	unsigned int w[64];
-	unsigned int s[6];
-	unsigned int tmp[8];
 
 	i = 0;
-	ft_memcpy(tmp, state, 32 * 8);
 	while (i < 64)
 	{
 		if (i <= 15)
@@ -68,6 +55,13 @@ static void				update(unsigned int *state, unsigned int *word)
 		}
 		i++;
 	}
+}
+
+void				update_sha_2(unsigned int *tmp, \
+		unsigned int *w, unsigned int *s)
+{
+	unsigned int i;
+
 	i = 0;
 	while (i < 64)
 	{
@@ -89,67 +83,4 @@ static void				update(unsigned int *state, unsigned int *word)
 		tmp[0] = s[3] + s[5];
 		i++;
 	}
-	i = 0;
-	while (i < 8)
-	{
-		state[i] += tmp[i];
-		i++;
-	}
-}
-
-void					sha_256(char *string, \
-		unsigned int *state, unsigned long int *size, size_t length)
-{
-	int nblock;
-	int i;
-
-	*size = *size + length;
-	nblock = 1;
-	if (length < 64)
-	{
-		string = pad(string, *size, &nblock, length);
-		reverse_endian(string + (nblock - 1) * 64 + 56, 8);
-	}
-	i = 0;
-	while (i < nblock)
-	{
-		update(state, (unsigned int*)&string[i * 64]);
-		i++;
-	}
-	if (length < 64)
-		ft_memdel((void**)&string);
-}
-
-static void				print_result(unsigned int *state, \
-		char *string, char *file, t_digest *cmd)
-{
-	char *str;
-
-	str = ft_strf("%08x%08x%08x%08x%08x%08x%08x%08x",
-		state[0], state[1], state[2], state[3],
-		state[4], state[5], state[6], state[7]);
-	if (cmd->quiet)
-		ft_printf("%s\n", str);
-	else if (cmd->reverse)
-		rprint_hash(str, string, file, "SHA256");
-	else
-		print_hash(str, string, file, "SHA256");
-	ft_strdel(&str);
-	ft_memdel((void**)&state);
-}
-
-static unsigned int		*init_state(void)
-{
-	unsigned int	*state;
-	size_t			size;
-
-	size = sizeof(unsigned int) * 8;
-	state = ft_memalloc(size);
-	ft_memcpy(state, g_sha_init, size);
-	return (state);
-}
-
-void					execute_sha_256(struct s_command *command)
-{
-	execute_digest(command, sha_256, init_state, print_result);
 }

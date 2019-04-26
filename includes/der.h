@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 14:35:17 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 14:36:52 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 17:37:03 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ void	check_is_bits(size_t (reader)(char*, size_t));
 void	write_integer(char *buff, __uint64_t i, size_t *l, size_t expectlen);
 void	write_sequence(char *buff, char length, size_t *len);
 void	write_version(char *buff, size_t *len);
+void	append(char *buff, char *content, size_t length, size_t *len);
+size_t	skip_zero(size_t (reader)(char*, size_t), size_t expectl, size_t reall);
 
 #endif

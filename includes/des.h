@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 13:04:34 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:02:54 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 18:22:23 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,12 @@ void					free_des(t_des *digest);
 size_t					read_des(t_des *cmd, char *buff);
 void					execute_des(struct s_command *command);
 void					des_command(t_des *cmd);
+void					get_content_des(t_sslarg *arg, t_des *des);
+void					prepare_keys(unsigned long int key, \
+							char keys[16][6], char decrypt);
+int						function(char *right_half, char *key);
+void					permutation(char *from, char *to, \
+							int *permutation_table, int length);
+unsigned long int		merge_lr(int l, int r);
 
 #endif

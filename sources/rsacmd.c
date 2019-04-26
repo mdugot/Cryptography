@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:06:02 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 15:58:35 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 18:12:28 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,8 @@ t_des	*des_for_rsa(char *password, int decrypt)
 	return (des);
 }
 
-void	check_rsacmd(t_sslarg *arg, struct s_command *command)
+void	get_content_rsa(t_sslarg *arg, t_rsacmd *cmd)
 {
-	t_rsacmd *cmd;
-
-	cmd = ft_memalloc(sizeof(t_rsacmd));
-	ft_bzero(cmd, sizeof(t_rsacmd));
-	allow_options(arg, (char*[]){"in", "out", "pubin", "pubout", "passin", \
-			"passout", "des", "inform", "outform", \
-			"text", "noout", "check", "modulus", NULL});
 	cmd->input = get_content(arg, "in");
 	cmd->output = get_content(arg, "out");
 	cmd->inform = get_content(arg, "inform");
@@ -59,6 +52,18 @@ void	check_rsacmd(t_sslarg *arg, struct s_command *command)
 	cmd->modulus = has_option(arg, "modulus");
 	cmd->desin = des_for_rsa(get_content(arg, "passin"), 1);
 	cmd->desout = des_for_rsa(get_content(arg, "passout"), 0);
+}
+
+void	check_rsacmd(t_sslarg *arg, struct s_command *command)
+{
+	t_rsacmd *cmd;
+
+	cmd = ft_memalloc(sizeof(t_rsacmd));
+	ft_bzero(cmd, sizeof(t_rsacmd));
+	allow_options(arg, (char*[]){"in", "out", "pubin", "pubout", "passin", \
+			"passout", "des", "inform", "outform", \
+			"text", "noout", "check", "modulus", NULL});
+	get_content_rsa(arg, cmd);
 	if (cmd->inform &&
 		ft_strcmp(cmd->inform, "PEM") && ft_strcmp(cmd->inform, "DER"))
 		basic_error("inform possible value : PEM, DER");

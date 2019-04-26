@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:08:11 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 15:49:22 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 17:20:48 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ size_t	read_64(t_base_64 *cmd, char *buff)
 
 void	print_64(t_base_64 *cmd, char *buff, size_t length)
 {
-	char str_64[BUFF64_SIZE * 2] = {0};
+	char str_64[BUFF64_SIZE * 2];
 
+	ft_bzero(str_64, BUFF64_SIZE * 2);
 	if (!cmd->decrypt)
 	{
 		base_64_encode(buff, length, str_64);

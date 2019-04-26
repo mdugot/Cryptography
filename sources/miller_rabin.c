@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:38:23 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 17:44:39 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 18:04:27 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ int	witness(__uint64_t a, __uint64_t n)
 			m = m / 2;
 		}
 	}
-	if (y != 1)
-		return (1);
-	else
-		return (0);
+	return ((y != 1) ? 1 : 0);
 }
 
 int	miller_witness(__uint64_t base, __uint64_t number)
@@ -58,16 +55,12 @@ int	miller_witness(__uint64_t base, __uint64_t number)
 	}
 	x = modular_pow(base, d, number);
 	if (x == base || x == number - 1)
-	{
 		return (0);
-	}
 	while (s > 1)
 	{
 		x = modular_pow(x, 2, number);
 		if (x == (number - 1))
-		{
 			return (0);
-		}
 		s = s - 1;
 	}
 	return (1);

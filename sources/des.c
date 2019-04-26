@@ -6,27 +6,15 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:39:25 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 15:51:04 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 17:46:47 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "des.h"
 #include "command.h"
 
-void				free_des(t_des *des)
+void				get_content_des(t_sslarg *arg, t_des *des)
 {
-	ft_memdel((void**)&des);
-}
-
-void				check_des(t_sslarg *arg, struct s_command *command)
-{
-	t_des *des;
-
-	des = ft_memalloc(sizeof(t_des));
-	ft_bzero(des, sizeof(t_des));
-	allow_options(arg, \
-			(char*[]){"i", "o", "k", "d", "e", "a", "v", "s", "p", NULL});
-	des->cbc = (ft_strcmp("des-ecb", command->name) != 0);
 	des->rsa = 0;
 	des->password = get_content(arg, "p");
 	des->input = get_content(arg, "i");
@@ -36,27 +24,15 @@ void				check_des(t_sslarg *arg, struct s_command *command)
 	des->iv = get_content(arg, "v");
 	des->decrypt = has_option(arg, "d");
 	des->base_64 = has_option(arg, "a");
-	if (des->base_64 && !des->decrypt)
-		des->writer = write_to_fd_64_line;
-	else
-		des->writer = write_to_fd;
-	des->reader = read_from_fd;
-	if (des->input)
-		fd_read_access(des->input);
-	if (des->output)
-		fd_write_access(des->output);
-	if (arg->argc > 0)
-		wrong_arg(arg, ft_strf("unknown option '%s'", arg->argv[0]));
-	des_password(des);
-	command->param = des;
 }
 
 void				print_des(t_des *cmd, \
 		unsigned long int code[3], int length, int last)
 {
-	char str_64[33] = {0};
+	char str_64[33];
 	char endpad;
 
+	ft_bzero(str_64, 33);
 	endpad = 0;
 	if (cmd->base_64 && !cmd->decrypt)
 	{
@@ -71,16 +47,6 @@ void				print_des(t_des *cmd, \
 		}
 		cmd->writer((char*)code, 8 * length - endpad);
 	}
-}
-
-size_t				read_des(t_des *cmd, char *buff)
-{
-	char buff_64[100];
-
-	if (cmd->base_64 && cmd->decrypt)
-		return (read_base_64(cmd->reader, buff, buff_64, 8));
-	else
-		return (cmd->reader(buff, 8));
 }
 
 unsigned long int	one_block_des(t_des *cmd, \
@@ -128,15 +94,4 @@ void				des_command(t_des *cmd)
 		}
 	}
 	print_des(cmd, result, (i % 3 == 0 ? 3 : i % 3), 1);
-}
-
-void				execute_des(struct s_command *command)
-{
-	t_des *cmd;
-
-	cmd = command->param;
-	des_command(cmd);
-	free_des(cmd);
-	if (cmd->base_64 && !cmd->decrypt)
-		cmd->writer("\n", 1);
 }

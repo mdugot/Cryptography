@@ -6,11 +6,13 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 14:26:19 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 14:39:16 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 18:07:15 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "reader.h"
+
+char	g_whites[] = " \t\n\r";
 
 int		fd_read_access(char *filename)
 {
@@ -52,66 +54,9 @@ char	*buff_read_access(char *a, size_t l)
 	return (arg + length);
 }
 
-size_t	read_from_buff(char *buffer, size_t max_size)
-{
-	char	*arg;
-	char	*endarg;
-	size_t	size;
-
-	size = 0;
-	arg = buff_read_access(NULL, 0);
-	endarg = buff_read_access(NULL, 1);
-	while (size < max_size && arg < endarg)
-	{
-		buffer[size] = *arg;
-		size++;
-		arg++;
-	}
-	buff_read_access(arg, endarg - arg);
-	return (size);
-}
-
-size_t	read_from_fd(char *buffer, size_t max_size)
-{
-	int		size;
-	int		fd;
-	size_t	length;
-
-	fd = fd_read_access(NULL);
-	ft_bzero(buffer, max_size);
-	size = 1;
-	length = 0;
-	while (length < max_size && size > 0)
-	{
-		size = (int)read(fd, &buffer[length], (max_size - length));
-		length += size;
-	}
-	if (size == -1)
-		basic_error("error while reading from file descriptor");
-	return (length);
-}
-
-size_t	read_from_arg(char *buffer, size_t max_size)
-{
-	char	*arg;
-	size_t	size;
-
-	size = 0;
-	arg = arg_read_access(NULL);
-	while (size < max_size && arg[size])
-	{
-		buffer[size] = arg[size];
-		size++;
-	}
-	arg_read_access(&arg[size]);
-	buffer[size] = 0;
-	return (size);
-}
-
 size_t	read_no_white_space(size_t (reader)(char*, size_t), \
 		char *buffer, size_t max_size)
 {
-	char	whites[] = " \t\n\r";
 	char	*found;
 	size_t	length;
 	size_t	size;
@@ -119,10 +64,10 @@ size_t	read_no_white_space(size_t (reader)(char*, size_t), \
 
 	size = reader(buffer, max_size);
 	length = size;
-	while (ft_first_of(buffer, whites, length))
+	while (ft_first_of(buffer, g_whites, length))
 	{
 		skip = 0;
-		while ((found = ft_first_of(buffer, whites, length - skip)) != NULL)
+		while ((found = ft_first_of(buffer, g_whites, length - skip)) != NULL)
 		{
 			if (found < (buffer + length - 1))
 				ft_memmove(found, found + 1, (buffer + length) - (found + 1));
@@ -137,15 +82,6 @@ size_t	read_no_white_space(size_t (reader)(char*, size_t), \
 		}
 	}
 	return (length);
-}
-
-size_t	read_from_arg_64(char *buff, size_t length)
-{
-	char buff_64[1001];
-
-	if (length >= 1001)
-		basic_error("can not read more than 1000 bytes from base64 string");
-	return (read_base_64(read_from_arg, buff, buff_64, length));
 }
 
 size_t	read_base_64(size_t (reader)(char*, size_t), \
