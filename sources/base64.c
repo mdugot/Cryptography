@@ -6,17 +6,21 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:03:30 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 15:46:46 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 17:09:00 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base64.h"
 
+char	g_codes[] = {
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"\
+	"abcdefghijklmnopqrstuvwxyz"\
+	"0123456789+/"};
+
 char	get_6_bits(char *bits, int length, int offset)
 {
 	int		i;
 	char	value;
-	char	*codes = BASE64_CODE;
 
 	i = 0;
 	value = 0;
@@ -27,7 +31,7 @@ char	get_6_bits(char *bits, int length, int offset)
 		set_bit(&value, 2 + i, get_bit(bits, offset + i));
 		i++;
 	}
-	return (codes[(int)value]);
+	return (g_codes[(int)value]);
 }
 
 void	base_64_encode(char *from, size_t length, char *to)
@@ -52,11 +56,10 @@ void	base_64_encode(char *from, size_t length, char *to)
 
 void	set_6_bits(char *to, size_t n, size_t offset, char c)
 {
-	char	*codes = BASE64_CODE;
 	char	value;
 	size_t	i;
 
-	value = ft_index(codes, (int)c);
+	value = ft_index(g_codes, (int)c);
 	if (value < 0)
 		basic_error("wrong character during base64 decoding");
 	i = 0;

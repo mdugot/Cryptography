@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 14:32:25 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 15:47:53 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/26 17:09:01 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@
 # include "bit.h"
 # include "error.h"
 # define BUFF64_SIZE 300
-
-# define BASE64_CODE \
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"\
-	"abcdefghijklmnopqrstuvwxyz"\
-	"0123456789+/"
 
 struct s_command;
 
