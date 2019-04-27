@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 18:35:01 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/27 17:09:16 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 20:28:33 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,9 @@ static void				print_result(unsigned int *state, \
 		char *string, char *file, t_digest *cmd)
 {
 	char *str;
-	char *bytes;
 
 	if (cmd->binary || cmd->colon)
-	{
-		for (int i = 0; i < 8; i++)
-			reverse_endian((char*)&state[i], sizeof(unsigned int));
-		bytes = (char*)state;
-		if (cmd->binary)
-			str = ft_strf("%.*s", 8*sizeof(unsigned int), bytes);
-		else
-			str = colons_hexa(bytes, 8*sizeof(unsigned int));
-	}
+		str = print_bytes_sha256(state, cmd);
 	else
 		str = ft_strf("%08x%08x%08x%08x%08x%08x%08x%08x",
 			state[0], state[1], state[2], state[3],
@@ -72,7 +63,7 @@ static void				update(unsigned int *state, unsigned int *word)
 	unsigned int s[6];
 	unsigned int tmp[8];
 
-	ft_memcpy(tmp, state, 32 * 8);
+	ft_memcpy(tmp, state, sizeof(unsigned int) * 8);
 	update_sha_1(word, w, s);
 	update_sha_2(tmp, w, s);
 	i = 0;

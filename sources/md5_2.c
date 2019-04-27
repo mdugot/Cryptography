@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 17:53:50 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/27 16:49:35 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 20:31:58 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ void					md5(char *string, unsigned int *state, \
 char					*md5_to_str(unsigned int *state, t_digest *cmd)
 {
 	int		i;
-	char	*bytes;
+	char	bytes[100];
+	char	*tmp;
 
+	ft_bzero(bytes, 100);
+	ft_memcpy((void*)bytes, (void*)state, 4 * sizeof(unsigned int));
 	i = 0;
 	if (cmd->binary)
-	{
-		bytes = (char*)state;
-		return (ft_strf("%.*s", 4*sizeof(unsigned int), bytes));
-	}
+		return (ft_strf("%.*s", 4 * sizeof(unsigned int), bytes));
 	while (i < 4)
 	{
-		bytes = (char*)&state[i];
-		reverse_endian(bytes, 4);
+		tmp = (char*)&state[i];
+		reverse_endian(tmp, 4);
 		i++;
 	}
 	return (ft_strf("%08x%08x%08x%08x", \

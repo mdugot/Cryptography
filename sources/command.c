@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:22:16 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/27 17:41:19 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 20:32:51 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		init_all_commands(void)
 	new_command("rsautl", &g_cmdlist, check_rsautl, execute_rsautl);
 }
 
-void		free_cmdlist()
+void		free_cmdlist(void)
 {
 	ft_lstfree(&g_cmdlist);
 }

@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:23:53 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/27 17:10:25 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 20:32:23 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ unsigned long int	key_from_string(char *str)
 	return (result);
 }
 
-char			*colons_hexa(char *bytes, size_t len)
+char				*colons_hexa(char *bytes, size_t len)
 {
 	char	*result;
 	size_t	i;

@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:20:59 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 18:42:19 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 20:31:29 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,25 @@ void				update_sha_2(unsigned int *tmp, \
 		tmp[0] = s[3] + s[5];
 		i++;
 	}
+}
+
+char				*print_bytes_sha256(unsigned int *state, t_digest *cmd)
+{
+	char	*str;
+	char	bytes[100];
+	int		i;
+
+	ft_bzero(bytes, 100);
+	i = 0;
+	while (i < 8)
+	{
+		reverse_endian((char*)&state[i], sizeof(unsigned int));
+		i++;
+	}
+	ft_memcpy((void*)bytes, (void*)state, 8 * sizeof(unsigned int));
+	if (cmd->binary)
+		str = ft_strf("%.*s", 8 * sizeof(unsigned int), bytes);
+	else
+		str = colons_hexa(bytes, 8 * sizeof(unsigned int));
+	return (str);
 }
