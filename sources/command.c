@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:22:16 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 16:28:42 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 17:41:19 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void		init_all_commands(void)
 	new_command("genrsa", &g_cmdlist, check_rsagen, execute_rsagen);
 	new_command("rsa", &g_cmdlist, check_rsacmd, execute_rsacmd);
 	new_command("rsautl", &g_cmdlist, check_rsautl, execute_rsautl);
+}
+
+void		free_cmdlist()
+{
+	ft_lstfree(&g_cmdlist);
 }
 
 void		execute_command(t_sslarg *arg)

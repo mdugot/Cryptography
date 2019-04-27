@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 17:45:31 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:46:49 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 15:19:34 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void				execute_des(struct s_command *command)
 
 	cmd = command->param;
 	des_command(cmd);
-	free_des(cmd);
 	if (cmd->base_64 && !cmd->decrypt)
 		cmd->writer("\n", 1);
+	free_des(cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 17:48:12 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:48:56 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 15:49:07 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ t_pair		*new_pair(char *key, char *value)
 	return (pair);
 }
 
-void		delete_pair(t_pair *pair, size_t size)
+void		delete_pair(void *ad, size_t size)
 {
+	t_pair *pair;
+
 	(void)size;
+	pair = (t_pair*)ad;
 	if (pair->key != NULL)
 		free(pair->key);
 	if (pair->value != NULL)

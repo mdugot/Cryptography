@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 14:37:22 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:30:59 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 16:26:51 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef struct			s_digest
 {
 	int					reverse;
 	int					quiet;
+	int					colon;
+	int					binary;
 	int					print_stdin;
 	int					nfiles;
 	char				**files;

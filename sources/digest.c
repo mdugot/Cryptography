@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:08:01 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:33:04 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 14:16:19 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void			execute_digest_str(struct s_command *command, \
 		unsigned int *(*init_state)(), \
 		void (*print_result)(unsigned int *, char*, char*, t_digest *))
 {
-	t_digest	*cmd;
-	int			i;
+	t_digest		*cmd;
+	int				i;
+	unsigned int	*state;
 
 	cmd = command->param;
 	if (cmd->string)
@@ -28,9 +29,9 @@ void			execute_digest_str(struct s_command *command, \
 		while (cmd->string[i])
 		{
 			arg_read_access(cmd->string[i]);
-			print_result(
-				hash(read_from_arg, digest, init_state, 0),
-				cmd->string[i], NULL, cmd);
+			state = hash(read_from_arg, digest, init_state, 0);
+			print_result(state, cmd->string[i], NULL, cmd);
+			ft_memdel((void**)&state);
 			i++;
 		}
 	}
@@ -41,25 +42,25 @@ void			execute_digest(struct s_command *command, \
 		unsigned int *(*init_state)(), \
 		void (*print_result)(unsigned int *, char*, char*, t_digest *))
 {
-	t_digest	*cmd;
-	int			i;
+	t_digest		*cmd;
+	int				i;
+	unsigned int	*state;
 
 	cmd = command->param;
 	if ((!cmd->string && cmd->nfiles <= 0) || cmd->print_stdin)
 	{
-		print_result(
-			hash(read_from_fd, digest, init_state, cmd->print_stdin),
-			NULL, NULL, cmd);
+		state = hash(read_from_fd, digest, init_state, cmd->print_stdin);
+		print_result(state, NULL, NULL, cmd);
+		ft_memdel((void**)&state);
 	}
 	execute_digest_str(command, digest, init_state, print_result);
 	i = 0;
 	while (i < cmd->nfiles)
 	{
-		ft_printf("file : %s\n", cmd->files[i]);
 		fd_read_access(cmd->files[i]);
-		print_result(
-			hash(read_from_fd, digest, init_state, 0),
-			NULL, cmd->files[i], cmd);
+		state = hash(read_from_fd, digest, init_state, 0);
+		print_result(state, NULL, cmd->files[i], cmd);
+		ft_memdel((void**)&state);
 		i++;
 	}
 	free_digest(cmd);

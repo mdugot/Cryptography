@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 17:53:50 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:59:57 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 16:49:35 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,17 @@ void					md5(char *string, unsigned int *state, \
 		ft_memdel((void**)&string);
 }
 
-char					*md5_to_str(unsigned int *state)
+char					*md5_to_str(unsigned int *state, t_digest *cmd)
 {
 	int		i;
 	char	*bytes;
 
 	i = 0;
+	if (cmd->binary)
+	{
+		bytes = (char*)state;
+		return (ft_strf("%.*s", 4*sizeof(unsigned int), bytes));
+	}
 	while (i < 4)
 	{
 		bytes = (char*)&state[i];
@@ -56,15 +61,16 @@ void					md5_print_result(unsigned int *state, \
 {
 	char *str;
 
-	str = md5_to_str(state);
-	if (cmd->quiet)
+	str = md5_to_str(state, cmd);
+	if (cmd->binary)
+		ft_printf("%s", str);
+	else if (cmd->quiet)
 		ft_printf("%s\n", str);
 	else if (cmd->reverse)
 		rprint_hash(str, string, file, "MD5");
 	else
 		print_hash(str, string, file, "MD5");
 	ft_strdel(&str);
-	ft_memdel((void**)&state);
 }
 
 void					execute_md5(struct s_command *command)

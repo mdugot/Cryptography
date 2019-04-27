@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 17:29:52 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:31:50 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 16:32:20 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ void			check_digest(t_sslarg *arg, struct s_command *command)
 	t_digest *digest;
 
 	digest = ft_memalloc(sizeof(t_digest));
-	allow_options(arg, (char*[]){"p", "q", "r", "s", NULL});
+	allow_options(arg, (char*[]){"c", "b", "p", "q", "r", "s", NULL});
 	digest->string = get_list_contents(arg, "s");
 	digest->reverse = has_option(arg, "r");
 	digest->quiet = has_option(arg, "q");
+	digest->colon = has_option(arg, "c");
+	digest->binary = has_option(arg, "b");
 	digest->print_stdin = has_option(arg, "p");
 	digest->files = arg->argv;
 	digest->nfiles = arg->argc;

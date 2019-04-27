@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 14:08:09 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 17:48:58 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 17:41:20 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ int			expect_content(char *name, t_pair *last)
 
 t_pair		*parse_one_arg(t_sslarg *arg, t_pair *last, int *end)
 {
-	ft_printf_fd(2, "parse : %s\n", arg->argv[0]);
 	if (arg->command != NULL && expect_content(arg->command, last))
-		last->value = arg->argv[0];
+		last->value = ft_strdup(arg->argv[0]);
 	else if (ft_strcmp("--", arg->argv[0]) == 0)
 	{
 		*end = 1;

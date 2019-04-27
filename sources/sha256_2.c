@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 18:35:01 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 18:41:56 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 17:09:16 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,31 @@ static void				print_result(unsigned int *state, \
 		char *string, char *file, t_digest *cmd)
 {
 	char *str;
+	char *bytes;
 
-	str = ft_strf("%08x%08x%08x%08x%08x%08x%08x%08x",
-		state[0], state[1], state[2], state[3],
-		state[4], state[5], state[6], state[7]);
-	if (cmd->quiet)
+	if (cmd->binary || cmd->colon)
+	{
+		for (int i = 0; i < 8; i++)
+			reverse_endian((char*)&state[i], sizeof(unsigned int));
+		bytes = (char*)state;
+		if (cmd->binary)
+			str = ft_strf("%.*s", 8*sizeof(unsigned int), bytes);
+		else
+			str = colons_hexa(bytes, 8*sizeof(unsigned int));
+	}
+	else
+		str = ft_strf("%08x%08x%08x%08x%08x%08x%08x%08x",
+			state[0], state[1], state[2], state[3],
+			state[4], state[5], state[6], state[7]);
+	if (cmd->binary)
+		ft_printf("%s", str);
+	else if (cmd->quiet)
 		ft_printf("%s\n", str);
 	else if (cmd->reverse)
 		rprint_hash(str, string, file, "SHA256");
 	else
 		print_hash(str, string, file, "SHA256");
 	ft_strdel(&str);
-	ft_memdel((void**)&state);
 }
 
 static unsigned int		*init_state(void)

@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 13:17:00 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/25 13:18:32 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/27 14:36:14 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct			s_sslarg
 
 t_pair					*new_pair(char *key, char *value);
 t_sslarg				*parse_options(int argc, char *argv[]);
-void					delete_pair(t_pair *pair, size_t size);
+void					delete_pair(void *ad, size_t size);
 t_pair					*new_pair(char *key, char *value);
 void					print_option(t_list *elem);
 
