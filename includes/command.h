@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 13:02:30 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/27 17:41:22 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/28 13:08:25 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "sha256.h"
 # include "des.h"
 # include "rsa.h"
+# include "luhn.h"
 
 typedef struct			s_command
 {

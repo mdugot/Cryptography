@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/28 10:51:17 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/28 11:10:04 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/28 13:09:04 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "tools.h"
 # include "error.h"
+# include "check.h"
 
 struct s_command;
 
