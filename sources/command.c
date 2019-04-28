@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:22:16 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/28 11:10:07 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/28 13:58:48 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_list	*g_cmdlist = NULL;
 void		init_all_commands(void)
 {
 	new_command("luhn", &g_cmdlist, check_luhn, execute_luhn);
+	new_command("rabin-karp", &g_cmdlist, check_rk, execute_rk);
 	new_command("md5", &g_cmdlist, check_digest, execute_md5);
 	new_command("sha256", &g_cmdlist, check_digest, execute_sha_256);
 	new_command("base64", &g_cmdlist, check_64, execute_64);

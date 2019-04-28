@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 13:02:30 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/28 13:08:25 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/28 15:37:56 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "des.h"
 # include "rsa.h"
 # include "luhn.h"
+# include "rk.h"
 
 typedef struct			s_command
 {
