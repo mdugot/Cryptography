@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 17:38:23 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 18:04:27 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/28 17:44:35 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ int	miller_rabin(__uint64_t number, __uint64_t k)
 		if (first)
 		{
 			first = 0;
-			ft_printf(".");
+			ft_printf_fd(2, ".");
 		}
 		k--;
-		ft_printf("+");
+		ft_printf_fd(2, "+");
 	}
-	ft_printf("\n");
+	ft_printf_fd(2, "\n");
 	return (1);
 }
 

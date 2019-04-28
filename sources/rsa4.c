@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 19:04:41 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/26 19:05:19 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/28 17:45:25 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_rsakey	*create_rsa_key(int (*is_primary)(__uint64_t, float), \
 	ft_bzero(key, sizeof(t_rsakey));
 	key->public_exponent = 65537;
 	random_prime_pair(key, is_primary, probability);
-	ft_printf("e is 65537 (0x10001)\n");
+	ft_printf_fd(2, "e is 65537 (0x10001)\n");
 	phi = (key->prime1 - 1) * (key->prime2 - 1);
 	r = gcd_extended(key->public_exponent, phi, &x, &y);
 	key->private_exponent = (__uint64_t)(x < 0 ? (phi + x) : x);
