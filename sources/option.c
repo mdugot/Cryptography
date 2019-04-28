@@ -6,7 +6,7 @@
 /*   By: mdugot <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 14:08:09 by mdugot            #+#    #+#             */
-/*   Updated: 2019/04/27 17:41:20 by mdugot           ###   ########.fr       */
+/*   Updated: 2019/04/28 11:10:05 by mdugot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "arg.h"
 
 const char	*g_container[] = {
+	"#luhn",
+	"m",
 	"#rsa#rsautl",
 	"inform",
 	"outform",
