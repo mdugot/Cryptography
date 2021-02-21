@@ -108,3 +108,33 @@ $> ./build/crypto sha256 -c /tmp/f3
 SHA256 (/tmp/f3) = 70:20:e5:76:25:b6:a6:69:5f:fd:51:ed:49:4f:bf:c5:6c:69:9e:ac:ec:a4:e7:7b:f7:ea:59:0c:7e:bf:38:79
 ```
 
+## DES
+
+[DES](http://page.math.tu-berlin.de/~kant/teaching/hess/krypto-ws2006/des.htm) is a cypher algorithm used to encrypt or decrypt a message. </br>
+Use the command `./build/crypto sha256 [OPTION] -i [INPUT FILE] -o [OUTPUT FILE]` to encrypt a file. </br>
+Use the command `./build/crypto sha256 -d [OPTION] -i [INPUT FILE] -o [OUTPUT FILE]` to decrypt a file. </br>
+The algorithm need a key and an initialization vector. They can be directly given with the option `-k` and `-v` or generated from a password given with the option `p`.
+The command accept the following options :
+ * `-i` input file, if not present, use stdin
+ * `-o` output file, if not present, use stdout
+ * `-d` decrypt mode
+ * `-k` 64 bits value in hexadecimal corresponding to the key
+ * `-v` 64 bits value in hexadecimal corresponding to the initialization vector
+ * `-p` password, if neither the passord nor the key are given, a prompt will ask the password to the user
+ * `-s` 64 bits value in hexadecimal used to salt the password
+ * `-a` base 64 mode
+
+### Example
+
+```
+$> echo "Never interrupt your enemy when he is making a mistake." > /tmp/msg
+$> ./build/crypto des -p josephine -i /tmp/msg | ./build/crypto des -d -p josephine
+Never interrupt your enemy when he is making a mistake.
+$> ./build/crypto des -p josephine -i /tmp/msg | ./build/crypto des -d -p marielouise
+/v^H:htJ@ɹ1h?k05>WC...
+
+$> ./build/crypto des -k FEEDBEEF -v CAFEFACE -i /tmp/msg | ./build/crypto des -d  -k FEEDBEEF -v CAFEFACE
+Never interrupt your enemy when he is making a mistake.
+$> ./build/crypto des -k FEEDBEEF -v CAFEFACE -i /tmp/msg | ./build/crypto des -d  -k FEEDBEE7 -v CAFEFACE
+q7<Gj&,7T CB>=|...
+```
