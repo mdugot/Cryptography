@@ -67,7 +67,6 @@ void	des_password_decrypt(struct s_des *des)
 	if (!des->int_64_salt)
 	{
 		length = read_des(des, buff);
-		ft_printf("BUFF = [%.8s] (%zu)\n", buff, length);
 		if (length != 8 || ft_strncmp(buff, "Salted__", 8) != 0)
 			basic_error("Wrong magic");
 		length = read_des(des, buff);
