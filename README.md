@@ -8,9 +8,9 @@ Implementation in C of the following cryptologic algorithms :
  * [md5](https://github.com/mdugot/Cryptography/tree/master#md5)
  * [sha256](https://github.com/mdugot/Cryptography/blob/master/README.md#sha256)
  * base64
- * des
- * des-ecb
- * des-cbc
+ * [des](https://github.com/mdugot/Cryptography/blob/master/README.md#des)
+ * [des-ecb](https://github.com/mdugot/Cryptography/blob/master/README.md#des)
+ * [des-cbc](https://github.com/mdugot/Cryptography/blob/master/README.md#des)
 
 # Requirements
 
@@ -142,10 +142,10 @@ q7<Gj&,7T CB>=|...
 
 ## DES-ECB
 
-Same than DES.
+Same than [DES](https://github.com/mdugot/Cryptography/blob/master/README.md#des).
 
 
 # DES-CBC
 
 Variation of the DES  algorithm where each block processed by the cypher is dependant of the all message.
-Same usage than DES.
+Same usage than [DES](https://github.com/mdugot/Cryptography/blob/master/README.md#des).
