@@ -6,7 +6,7 @@ Implementation in C of the following cryptologic algorithms :
  * rabin-karp
  * luhn
  * [md5](https://github.com/mdugot/Cryptography/tree/master#md5)
- * sha256
+ * [sha256](https://github.com/mdugot/Cryptography/blob/master/README.md#sha256)
  * base64
  * des
  * des-ecb
