@@ -77,7 +77,7 @@ Use the command `./build/crypto sha256 [OPTION] [FILE ...]` to get the hash of o
 If no files are given in argument, the user stdin inputs will be hashed. </br>
 The command accept the following options :
  * `-b` output binary hash instead of hexadecimal value
- * `-s [STRING]` hash the string passed as argument
+ * `-s STRING` hash the string passed as argument
  * `-q` quiet mode
  * `-p` print stdin
  * `-r` reverse output
@@ -115,13 +115,13 @@ Use the command `./build/crypto sha256 [OPTION] -i [INPUT FILE] -o [OUTPUT FILE]
 Use the command `./build/crypto sha256 -d [OPTION] -i [INPUT FILE] -o [OUTPUT FILE]` to decrypt a file. </br>
 The algorithm need a key and an initialization vector. They can be directly given with the option `-k` and `-v` or generated from a password given with the option `-p`.
 The command accept the following options :
- * `-i` input file, if not present, use stdin
- * `-o` output file, if not present, use stdout
+ * `-i FILENAME` input file, if not present, use stdin
+ * `-o FILENAME` output file, if not present, use stdout
  * `-d` decrypt mode
- * `-k` 64 bits value in hexadecimal corresponding to the key
- * `-v` 64 bits value in hexadecimal corresponding to the initialization vector
- * `-p` password, if neither the passord nor the key are given, a prompt will ask the password to the user
- * `-s` 64 bits value in hexadecimal used to salt the password
+ * `-k KEY` 64 bits value in hexadecimal corresponding to the key
+ * `-v IV` 64 bits value in hexadecimal corresponding to the initialization vector
+ * `-p PASSWORD` password, if neither the passord nor the key are given, a prompt will ask the password to the user
+ * `-s SALT` 64 bits value in hexadecimal used to salt the password
  * `-a` base 64 mode
 
 ### Example
