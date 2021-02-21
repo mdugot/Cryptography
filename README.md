@@ -37,7 +37,7 @@ It should have created the binary `build/crypto`.
 ## MD5
 
 [MD5](https://tools.ietf.org/html/rfc1321) is cryptologic hash function hashing a message of any length into a 128 bits code. </br>
-Use the command `./build/crypto md5 [OPTION] [FILE ...] to get the hash of one or several files. </br>
+Use the command `./build/crypto md5 [OPTION] [FILE ...]` to get the hash of one or several files. </br>
 If no files are given in argument, the user stdin inputs will be hashed. </br>
 The command accept the following options :
  * `-b` output binary hash instead of hexadecimal value
