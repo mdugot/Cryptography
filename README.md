@@ -113,7 +113,7 @@ SHA256 (/tmp/f3) = 70:20:e5:76:25:b6:a6:69:5f:fd:51:ed:49:4f:bf:c5:6c:69:9e:ac:e
 [DES](http://page.math.tu-berlin.de/~kant/teaching/hess/krypto-ws2006/des.htm) is a cypher algorithm used to encrypt or decrypt a message. </br>
 Use the command `./build/crypto sha256 [OPTION] -i [INPUT FILE] -o [OUTPUT FILE]` to encrypt a file. </br>
 Use the command `./build/crypto sha256 -d [OPTION] -i [INPUT FILE] -o [OUTPUT FILE]` to decrypt a file. </br>
-The algorithm need a key and an initialization vector. They can be directly given with the option `-k` and `-v` or generated from a password given with the option `p`.
+The algorithm need a key and an initialization vector. They can be directly given with the option `-k` and `-v` or generated from a password given with the option `-p`.
 The command accept the following options :
  * `-i` input file, if not present, use stdin
  * `-o` output file, if not present, use stdout
@@ -138,3 +138,14 @@ Never interrupt your enemy when he is making a mistake.
 $> ./build/crypto des -k FEEDBEEF -v CAFEFACE -i /tmp/msg | ./build/crypto des -d  -k FEEDBEE7 -v CAFEFACE
 q7<Gj&,7T CB>=|...
 ```
+
+
+## DES-ECB
+
+Same than DES.
+
+
+# DES-CBC
+
+Variation of the DES  algorithm where each block processed by the cypher is dependant of the all message.
+Same usage than DES.
