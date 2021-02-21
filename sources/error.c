@@ -64,8 +64,8 @@ void		print_list_command(char *name, const char *cmds[])
 
 void		wrong_command(char *message)
 {
-	ft_printf_fd(2, "ft_ssl: Error: %s\n", message);
-	ft_printf_fd(2, "usage: ft_ssl command [command opts] [command args]\n");
+	ft_printf_fd(2, "crypto: Error: %s\n", message);
+	ft_printf_fd(2, "usage: crypto command [command opts] [command args]\n");
 	print_list_command("Standard", (const char**)g_standard);
 	print_list_command("Message Digest", (const char**)g_digest);
 	print_list_command("Cypher", (const char**)g_cypher);

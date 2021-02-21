@@ -14,19 +14,19 @@
 
 void		wrong_arg(t_sslarg *arg, char *message)
 {
-	ft_printf_fd(2, "ft_ssl: Error: [%s] %s\n", arg->command, message);
+	ft_printf_fd(2, "crypto: Error: [%s] %s\n", arg->command, message);
 	exit(1);
 }
 
 void		basic_error(char *message)
 {
-	ft_printf_fd(2, "ft_ssl: Error: %s\n", message);
+	ft_printf_fd(2, "crypto: Error: %s\n", message);
 	exit(1);
 }
 
 void		wrong_file(char *filename, char *message)
 {
-	ft_printf_fd(2, "ft_ssl: Error: %s: %s\n", filename, message);
+	ft_printf_fd(2, "crypto: Error: %s: %s\n", filename, message);
 	exit(1);
 }
 
