@@ -5,7 +5,7 @@ Implementation in C of the following cryptologic algorithms :
  * rsa
  * rabin-karp
  * luhn
- * md5
+ * [md5](https://github.com/mdugot/Cryptography/tree/master#md5)
  * sha256
  * base64
  * des
