@@ -142,10 +142,10 @@ q7<Gj&,7T CB>=|...
 
 ## DES-ECB
 
-Same than [DES](https://github.com/mdugot/Cryptography/blob/master/README.md#des).
+Same than the [des command](https://github.com/mdugot/Cryptography/blob/master/README.md#des).
 
 
 ## DES-CBC
 
 Variation of the DES  algorithm where each block processed by the cypher is dependant of the all message.
-Same usage than [DES](https://github.com/mdugot/Cryptography/blob/master/README.md#des).
+Same usage than the [des command](https://github.com/mdugot/Cryptography/blob/master/README.md#des).
