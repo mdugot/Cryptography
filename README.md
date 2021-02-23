@@ -92,6 +92,21 @@ $> ./build/crypto rsautl -decrypt -inkey /tmp/private  -in /tmp/secret
 42
 ```
 
+## Rabin-Karp
+
+[Rabin-Karp](https://en.wikipedia.org/wiki/Rabin%E2%80%93Karp_algorithm) is a fast string searching algorithm based on rolling hashing.
+Use the command `./build/crypto rabin-karp -string STRING -search STRING` to search an occurence into a string or `./build/crypto rabin-karp -file FILE -search STRING` to search an occurence into a file.
+
+### Example
+
+```
+$> printf '%d-' {1..100000} > /tmp/bigfile
+$> ./build/crypto rabin-karp -file /tmp/bigfile -search "57770-57771"
+'57770-57771' found at index 335508
+$> ./build/crypto rabin-karp -file /tmp/bigfile -search "57770-57772"
+'57770-57772' not found
+```
+
 ## Base64
 
 [Base64](https://en.wikipedia.org/wiki/Base64) is a simple method to encode binary data into ASCII characters. </br>
