@@ -7,7 +7,7 @@ Implementation in C of the following cryptologic algorithms :
  * luhn
  * [md5](https://github.com/mdugot/Cryptography/tree/master#md5)
  * [sha256](https://github.com/mdugot/Cryptography/blob/master/README.md#sha256)
- * base64
+ * [base64](https://github.com/mdugot/Cryptography/blob/master/README.md#base64)
  * [des](https://github.com/mdugot/Cryptography/blob/master/README.md#des)
  * [des-ecb](https://github.com/mdugot/Cryptography/blob/master/README.md#des)
  * [des-cbc](https://github.com/mdugot/Cryptography/blob/master/README.md#des)
@@ -199,7 +199,7 @@ The command accept the following options :
  * `-v IV` 64 bits value in hexadecimal corresponding to the initialization vector
  * `-p PASSWORD` password, if neither the passord nor the key are given, a prompt will ask the password to the user
  * `-s SALT` 64 bits value in hexadecimal used to salt the password
- * `-a` base 64 mode
+ * `-a` [base64](https://github.com/mdugot/Cryptography/blob/master/README.md#base64) mode
 
 ### Example
 
