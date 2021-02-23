@@ -111,6 +111,23 @@ $>echo "Hello !" | ./build/crypto base64 | ./build/crypto base64 -d
 Hello !
 ```
 
+## LUHN
+
+[Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) is formula used to check the validity of identification number notably the credit card number. </br>
+Use the command `./build/crypto luhn NUMBER` to check the validity of a specific number.
+
+### Example
+
+```
+$> ./build/crypto luhn 4578456256439173
+luhn of 4578456256439173 (mod 10) is 0
+the number is valid.
+$> ./build/crypto luhn 4578456256439172
+luhn of 4578456256439172 (mod 10) is 9
+the number is invalid.
+```
+
+
 ## MD5
 
 [MD5](https://tools.ietf.org/html/rfc1321) is cryptologic hash function hashing a message of any length into an almost unique 128 bits code. </br>
