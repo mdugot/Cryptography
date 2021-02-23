@@ -1,6 +1,6 @@
 # Cryptography
 
-Implementation in C of the following cryptologic algorithms :
+Implementation in C of the following cryptographic algorithms :
 
  * [rsa](https://github.com/mdugot/Cryptography/blob/master/README.md#rsa)
  * [rabin-karp](https://github.com/mdugot/Cryptography/blob/master/README.md#rabin-karp)
@@ -145,7 +145,7 @@ the number is invalid.
 
 ## MD5
 
-[MD5](https://tools.ietf.org/html/rfc1321) is cryptologic hash function hashing a message of any length into an almost unique 128 bits code. </br>
+[MD5](https://tools.ietf.org/html/rfc1321) is cryptographic hash function hashing a message of any length into an almost unique 128 bits code. </br>
 Use the command `./build/crypto md5 [OPTION] [FILE ...]` to get the hash of one or several files. </br>
 If no files are given in argument, the user stdin inputs will be hashed. </br>
 The command accept the following options :
@@ -181,7 +181,7 @@ fd2cc6c54239c40495a0d3a93b6380eb
 
 ## SHA256
 
-[SHA256](http://www.iwar.org.uk/comsec/resources/cipher/sha256-384-512.pdf) is cryptologic hash function hashing a message of any length into an almost unique 256 bits code. </br>
+[SHA256](http://www.iwar.org.uk/comsec/resources/cipher/sha256-384-512.pdf) is cryptographic hash function hashing a message of any length into an almost unique 256 bits code. </br>
 Use the command `./build/crypto sha256 [OPTION] [FILE ...]` to get the hash of one or several files. </br>
 If no files are given in argument, the user stdin inputs will be hashed. </br>
 The command accept the following options :
