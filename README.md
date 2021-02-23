@@ -42,6 +42,21 @@ Use the command `./build/crypto genrsa [OPTION]` to generate the private key. It
  * `-o FILE` file where to save the key, print the key on the stdout by default
  * `-rand FILE` file use to generate prime numbers, use `/dev/urandom` by default
 
+Use the command `./build/crypto rsa [OPTION]` to analyse and convert a rsa key. It allows the following options :
+ * `-in FILE` file containing the input key, use stdin by default
+ * `-out FILE` where to write the output key, use stdout by default
+ * `-inform (PEM|DER)` format of the input key, choose between PEM and DER, PEM by default
+ * `-outform (PEM|DER)` format of the output key, choose between PEM and DER, PEM by default
+ * `-text` print information about the input key
+ * `-modulus` print the modulus of the input key
+ * `-check` check if the input key is valid, only private keys can be checked
+ * `-pubin` input a public key, expect a private key by default
+ * `-pubout` output a public key, output a private key by default
+ * `-noout` do not output a key
+ * `-des` encode the output key with [DES](https://github.com/mdugot/Cryptography/blob/master/README.md#des)
+ * `-passout` password when encoding the output key with DES, by default a prompt will ask the user a passwor 
+ * `-passin` password to decode a DES input key, by default a prompt will ask the user a passwor 
+
 Use the command `./build/crypto rsautl [OPTION]` to encrypt data with a public key and decrypt them with a private key. It allows the following options.
  * `-in FILE` input file to encrypt or decrypt, stdin by default
  * `-out FILE` output file, stdout by default
@@ -49,6 +64,33 @@ Use the command `./build/crypto rsautl [OPTION]` to encrypt data with a public k
  * `-pubin` use a public key for encrypting the data (can not be use for decrypting), private key by default
  * `-decrypt` decrypt mode, encrypt by default
  * `-hexdump` print hexadecimal value of the data
+
+### Example
+
+```
+$> printf '%d' {1..1000} > /tmp/myrand
+$> ./build/crypto genrsa -o /tmp/private -rand /tmp/myrand
+.++++++++++++
+.++++++++++++
+e is 65537 (0x10001)
+$> ./build/crypto rsa -in /tmp/private -noout -text
+Private-Key: (64 bit)
+modulus: 875986723 (0x34367f23)
+public_exponent: 65537 (0x10001)
+private_exponent: 754002833 (0x2cf12b91)
+prime1: 18587 (0x489b)
+prime2: 47129 (0xb819)
+exponent1: 5985 (0x1761)
+exponent2: 1961 (0x7a9)
+coefficient: 9722 (0x25fa)
+$> ./build/crypto rsa -in /tmp/private -out /tmp/public -pubout
+$> echo 42 > /tmp/auth
+$> ./build/crypto rsautl -pubin -inkey /tmp/public  -in /tmp/auth -out /tmp/secret
+$> cat /tmp/secret
+~0
+$> ./build/crypto rsautl -decrypt -inkey /tmp/private  -in /tmp/secret
+42
+```
 
 
 ## MD5
