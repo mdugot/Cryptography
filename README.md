@@ -92,6 +92,24 @@ $> ./build/crypto rsautl -decrypt -inkey /tmp/private  -in /tmp/secret
 42
 ```
 
+## Base64
+
+[Base64](https://en.wikipedia.org/wiki/Base64) is a simple method to encode binary data into ASCII characters. </br>
+Use the command `./build/crypto base64 [OPTION]` to encode or decode in base64. It accepts the following options :
+* `-i FILE` input file, use stdin by default
+* `-o FILE` output file, use stdout by default
+* `-d` decrypt mode, encrypt by default
+* `-e` encrypt mode
+
+### Example
+
+```
+$> ./build/crypto base64 <<< "this is a test"
+dGhpcyBpcyBhIHRlc3QK
+
+$>echo "Hello !" | ./build/crypto base64 | ./build/crypto base64 -d
+Hello !
+```
 
 ## MD5
 
