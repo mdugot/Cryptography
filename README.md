@@ -36,7 +36,7 @@ It should have created the binary `build/crypto`.
 
 ## RSA
 
-[RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) is an asymetric key cryptosystem allowing to generate a pair of private and public key based on prime numbers. The public key can then be dstributed and use to encrypt data (often symetric key that can be used for authentification) that can only be decrypted with the private key.
+[RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) is an asymetric key cryptosystem allowing to generate a pair of private and public key based on prime numbers. The public key can then be dstributed and use to encrypt data (often symetric key that can be used for authentification) that can only be decrypted with the private key. This implementation of RSA is limited to 64bits keys that can only encode 32 bits of data.
 
 Use the command `./build/crypto genrsa [OPTION]` to generate the private key. It allows the following options :
  * `-o FILE` file where to save the key, print the key on the stdout by default
