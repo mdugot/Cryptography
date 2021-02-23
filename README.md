@@ -2,7 +2,7 @@
 
 Implementation in C of the following cryptologic algorithms :
 
- * rsa
+ * [rsa](https://github.com/mdugot/Cryptography/blob/master/README.md#rsa)
  * rabin-karp
  * luhn
  * [md5](https://github.com/mdugot/Cryptography/tree/master#md5)
