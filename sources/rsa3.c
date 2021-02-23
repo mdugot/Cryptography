@@ -53,7 +53,6 @@ t_rsakey	*read_public_key(char *body, size_t (reader)(char*, size_t))
 		arg_read_access(body);
 	check_is_sequence(reader);
 	length = read_length(reader);
-	ft_printf("sequence length = %llx\n", length);
 	if (pass_data(reader) != 0x02)
 	{
 		check_is_bits(reader);
@@ -61,12 +60,9 @@ t_rsakey	*read_public_key(char *body, size_t (reader)(char*, size_t))
 		check_is_sequence(reader);
 		length = read_length(reader);
 	}
-	ft_printf("modulus\n");
 	read_integer(reader, (char*)&key->modulus, 8);
-	ft_printf("public e\n");
 	read_integer(reader, (char*)&key->public_exponent, 8);
-	ft_printf("ok\n");
-	print_rsa_key(key);
+	// print_rsa_key(key);
 	return (key);
 }
 

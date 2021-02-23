@@ -104,7 +104,6 @@ void	execute_rsacmd(struct s_command *command)
 		ft_printf("Modulus=%llX\n", cmd->key->modulus);
 	if (!cmd->noout)
 	{
-		ft_printf("writing RSA key\n");
 		if (cmd->outform && !ft_strcmp(cmd->outform, "DER"))
 			write_key_der(cmd->key, cmd->pubout);
 		else if (cmd->des)

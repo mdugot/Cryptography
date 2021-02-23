@@ -75,7 +75,7 @@ void	execute_rsautl(struct s_command *command)
 	__uint64_t	result;
 
 	cmd = command->param;
-	print_rsa_key(cmd->key);
+	// print_rsa_key(cmd->key);
 	if (cmd->decrypt)
 		result = modular_pow(cmd->data, \
 				cmd->key->private_exponent, cmd->key->modulus);
